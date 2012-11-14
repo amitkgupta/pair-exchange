@@ -24,4 +24,10 @@ describe Project do
       project.interest_from?("notInterested@example.com").should be_false
     end
   end
+
+  describe '#owner_image_url' do
+    it 'gets the image url from the google api' do
+
+    end
+  end
 end

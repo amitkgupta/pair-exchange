@@ -25,6 +25,7 @@ end
 
 group :test do
   gem 'rake'
+  gem 'webmock'
 end
 
 group :test, :development do
