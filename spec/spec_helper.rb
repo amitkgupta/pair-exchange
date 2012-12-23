@@ -19,10 +19,6 @@ Capybara.server_port = 8378
 DatabaseCleaner.strategy = :truncation
 
 RSpec.configure do |config|
-
- end
-
-RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
