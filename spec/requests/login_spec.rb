@@ -10,14 +10,7 @@ describe "Logging in", js: true do
 	end
 	
 	it "should redirect to the projects page by default" do
-		visit root_path
-		fill_in "Email", with: "testing.pair.exchange@gmail.com"
-		fill_in "Password", with: "john50buttons"
-		click_on "Sign in"
-		if page.has_content? "Allow access"
-			sleep 3
-			click_on "Allow access" if page.has_content? "Allow access"
-		end
+		login_test_user
 		page.should have_content "Project"
 		page.should have_content "PairExchange"
 		page.should have_content "Add project"				

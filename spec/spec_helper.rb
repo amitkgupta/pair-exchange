@@ -6,11 +6,16 @@ require 'rspec/autorun'
 require 'webmock/rspec'
 require 'factory_girl'
 require 'helpers'
+require 'capybara/poltergeist'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 FactoryGirl.find_definitions
+
+# Configure Capybara to use Poltergeist driver for Javascript
+# default port 44678
+Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
   # ## Mock Framework

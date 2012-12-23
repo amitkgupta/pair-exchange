@@ -29,4 +29,11 @@ class GoogleApiInterface
 	def current_user_email
 		@client.execute(api_method: @client.discovered_api('oauth2').userinfo.get).data.email
 	end
+	
+	def image_url_for_user(email)
+		@client.execute(
+			api_method: @client.discovered_api('plus').people.search,
+			parameters: {'query' => email}
+		).data.items[0].image.url
+	end
 end

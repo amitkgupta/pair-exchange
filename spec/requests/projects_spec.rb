@@ -1,17 +1,19 @@
 require 'spec_helper'
 
-describe 'Listing projects' do
-  let(:user) { 'jpivot@pivotallabs.com' }
-
+describe 'Listing projects', js: true do
   before do
-    visit "#{test_login_path}?email=#{user}"
-    Project.create!(name: 'My Lovely Project')
+	Project.create!(name: 'My Lovely Project')
     Project.create!(name: 'My Done Project', finished: true)
     
-    visit root_path
+    WebMock.allow_net_connect!
+ 	login_test_user
+  end
+  
+  after do
+     WebMock.disable_net_connect! :allow => %r{/((__.+__)|(hub/session.*))$}
   end
 
-  it 'shows a list of added projects on the home page' do
+  it 'shows a list of active projects on the home page' do
     page.should have_content('My Lovely Project')
     page.should_not have_content('My Done Project')
   end
@@ -20,7 +22,7 @@ describe 'Listing projects' do
     click_on "Add project"
     within('#new_project') do
       fill_in 'Project Name', with: 'My 8th Grade Science Diorama'
-      page.should have_content(user)
+      page.should have_content('testing.pair.exchange@gmail.com')
       select 'SF', from: 'Office'
       fill_in 'Technology', with: 'Cardboard'
       click_on 'Create Project'

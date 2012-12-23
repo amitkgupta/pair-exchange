@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ProjectsController do
   before do
-    login("jpivot@pivotallabs.com")
+    fake_login("jpivot@pivotallabs.com")
   end
 
   describe 'routing' do

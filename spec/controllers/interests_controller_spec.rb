@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe InterestsController do
   let(:current_user_email) { "jpivot@pivotallabs.com" }
+  
   before do
-    login("jpivot@pivotallabs.com")
+    fake_login(current_user_email)
   end
 
   describe 'routing' do

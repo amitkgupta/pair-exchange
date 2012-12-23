@@ -26,6 +26,7 @@ end
 group :test do
   gem 'rake'
   gem 'webmock'
+  gem 'poltergeist'
 end
 
 group :test, :development do

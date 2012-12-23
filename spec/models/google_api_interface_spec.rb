@@ -49,4 +49,21 @@ describe GoogleApiInterface do
 			subject.current_user_email.should == 'someone@pivotallabs.com'
 		end
 	end
+	
+	describe "#image_url_for_user" do
+		it "returns the given user's Google+ profile photo url" do
+			google_plus_api = OpenStruct.new(people: OpenStruct.new(search: :search_method))
+			top_search_result = OpenStruct.new(image: OpenStruct.new(url: "http://some.image/url.jpg"))
+			response = OpenStruct.new(data: OpenStruct.new(items: [top_search_result]))
+					
+			subject.client.should_receive(:discovered_api)
+				.with('plus')
+				.and_return(google_plus_api)
+			subject.client.should_receive(:execute)
+				.with(api_method: :search_method, parameters: {'query' => "someone@pivotallabs.com"})
+				.and_return(response)
+			
+			subject.image_url_for_user("someone@pivotallabs.com").should == "http://some.image/url.jpg"
+		end
+	end
 end
