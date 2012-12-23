@@ -1,30 +1,29 @@
 require "spec_helper"
 
 describe ApplicationController do
-  controller do
-    def index
-      @current_user = current_user
-      render :nothing => true
-    end
-  end
+	controller do
+    	def index; render nothing: true; end
+	end
 
-  describe "#current_user" do
-    before :each do
-      @user = 'jpivot@pivotallabs.com'
-      login(@user)
-    end
+	describe "#require_google_api_access" do
+  		context "if the user is not logged in" do
+  			it "should redirect to Google for authorization if the session is not ready" do
+				get :index
 
-    it "should return the current_user" do
-      get :index
-      assigns(:current_user).should ==(@user)
+				response.should redirect_to(GoogleApiInterface.new.authorization_uri.to_s)
+			end
+		end
+		
+		context "if the user is logged in" do
+			it "should not redirect the user" do
+				session[:email] = "someone@pivotallabs.com"
+				session[:google_api_refresh_token] = "refresh_token"
+				
+				get :index
+				
+				response.should_not be_redirect
+				response.status.should == 200
+			end
+		end
     end
-  end
-
-  describe "#require_login" do
-    it "should redirect to auth page if no user logged in" do
-      get :index
-      response.should be_redirect
-      response.should redirect_to("/auth/google_apps")
-    end
-  end
 end

@@ -60,3 +60,5 @@ module PairExchange
     config.assets.version = '1.0'
   end
 end
+
+HOST = "http://localhost:3000/"

@@ -1,20 +1,14 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
-  before_filter :require_login
+    include ApplicationHelper
+	protect_from_forgery
+	before_filter :require_google_api_access
 
-  helper_method :current_user
+	private
 
-  helper_method :current_user
-
-  def current_user
-    @current_user ||= session[:email]
-  end
-
-  helper_method :current_user
-
-  def require_login
-    unless session[:email]
-      redirect_to("/auth/google_apps")
-    end
-  end
+	def require_google_api_access
+		unless session_ready?
+			session[:final_redirect] = request.url
+			redirect_to google_api_interface.authorization_uri.to_s
+		end
+	end
 end

@@ -1,9 +1,14 @@
-class SessionsController < ActionController::Base
-  def create
-    if request.env['omniauth.auth']['info']['email'] =~ /.*@pivotallabs\.com/
-      session[:email] = request.env['omniauth.auth']['info']['email']
-    end
+class SessionsController < ApplicationController
+	skip_before_filter :require_google_api_access
 
-    redirect_to root_path
-  end
+	def create
+		unless session_ready? || params[:code].blank?
+			begin
+				session[:google_api_refresh_token] = google_api_interface.exchange_code_for_refresh_token(params[:code])
+				session[:email] = google_api_interface.current_user_email
+			rescue
+			end
+		end
+		redirect_to session.delete(:final_redirect) || root_path
+	end
 end
