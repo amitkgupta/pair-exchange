@@ -36,4 +36,4 @@ PairExchange::Application.configure do
   config.active_support.deprecation = :stderr
 end
 
-HOST = "http://localhost:44678/"
+HOST = "http://localhost:8378/"

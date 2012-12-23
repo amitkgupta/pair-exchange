@@ -6,9 +6,7 @@ gem 'heroku'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem "less-rails"
-gem 'pg'
 gem 'twitter-bootstrap-rails'
-gem 'omniauth-google-apps'
 gem 'thin'
 gem 'google-api-client'
 
@@ -21,18 +19,19 @@ end
 
 group :development do
   gem 'heroku_san'
+  gem 'pg'
 end
 
 group :test do
   gem 'rake'
   gem 'webmock'
-  gem 'poltergeist'
+  gem 'database_cleaner'
+  gem 'capybara'
 end
 
 group :test, :development do
   gem 'rspec-rails'
   gem 'smooth-jazz-nyan-cat-formatter'
-  gem 'capybara'
   gem 'sqlite3'
   gem 'factory_girl'
 end

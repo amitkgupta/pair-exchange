@@ -6,26 +6,23 @@ require 'rspec/autorun'
 require 'webmock/rspec'
 require 'factory_girl'
 require 'helpers'
-require 'capybara/poltergeist'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 FactoryGirl.find_definitions
 
-# Configure Capybara to use Poltergeist driver for Javascript
-# default port 44678
-Capybara.javascript_driver = :poltergeist
+# Fix Capybara server port to match callback URL registered with Google API
+Capybara.server_port = 8378
+
+# Prepare database cleaner for request spec configurations
+DatabaseCleaner.strategy = :truncation
 
 RSpec.configure do |config|
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
 
+ end
+
+RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -44,4 +41,17 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+  
+  # Configure database and web connection settings for Selenium tests
+  config.around :each, js: true do |spec|
+	config.use_transactional_fixtures = false
+	DatabaseCleaner.start
+	WebMock.allow_net_connect!
+  	
+  	spec.run
+
+	config.use_transactional_fixtures = true
+	DatabaseCleaner.clean
+   	WebMock.disable_net_connect! :allow => %r{/((__.+__)|(hub/session.*))$}
+  end
 end

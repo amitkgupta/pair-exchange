@@ -5,12 +5,7 @@ describe 'Listing projects', js: true do
 	Project.create!(name: 'My Lovely Project')
     Project.create!(name: 'My Done Project', finished: true)
     
-    WebMock.allow_net_connect!
  	login_test_user
-  end
-  
-  after do
-     WebMock.disable_net_connect! :allow => %r{/((__.+__)|(hub/session.*))$}
   end
 
   it 'shows a list of active projects on the home page' do

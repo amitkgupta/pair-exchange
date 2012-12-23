@@ -8,5 +8,5 @@ def login_test_user
 	fill_in "Email", with: "testing.pair.exchange@gmail.com"
 	fill_in "Password", with: "john50buttons"
 	click_on "Sign in"
-	sleep 3 and click_on "Allow access" if page.has_content? "Allow access"
+	sleep 1.5 and click_on "Allow access" if page.has_content? "Allow access"
 end
