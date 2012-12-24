@@ -15,17 +15,18 @@ FactoryGirl.find_definitions
 # Fix Capybara server port to match callback URL registered with Google API
 Capybara.server_port = 8378
 
-# Prepare database cleaner for request spec configurations
-DatabaseCleaner.strategy = :truncation
+# Wipe the test DB initially
+DatabaseCleaner.clean_with :truncation
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
+  # Tests need to be able to switch database cleaning strategies depending on whether
+  # Selenium driver is being used, since Selenium doesn't work with transactional
+  # fixtures.  Setting this to false so DatabaseCleaner can handle strategy on a per-test
+  # basis. 
+  config.use_transactional_fixtures = false
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -37,17 +38,4 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-  
-  # Configure database and web connection settings for Selenium tests
-  config.around :each, js: true do |spec|
-	config.use_transactional_fixtures = false
-	DatabaseCleaner.start
-	WebMock.allow_net_connect!
-  	
-  	spec.run
-
-	config.use_transactional_fixtures = true
-	DatabaseCleaner.clean
-   	WebMock.disable_net_connect! :allow => %r{/((__.+__)|(hub/session.*))$}
-  end
 end

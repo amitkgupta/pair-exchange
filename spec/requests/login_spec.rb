@@ -7,7 +7,5 @@ describe "Logging in", js: true do
 		page.should have_content "PairExchange"
 		page.should have_content "Add project"				
 	end
-		
-	it "should successfully display users' Google+ pictures"
 end
 	

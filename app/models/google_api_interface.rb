@@ -13,7 +13,7 @@ class GoogleApiInterface
 		@client.authorization.client_id = GoogleApiInterface.client_id
 		@client.authorization.client_secret = GoogleApiInterface.client_secret
 		@client.authorization.scope = "#{GoogleApiInterface.user_email_url} #{GoogleApiInterface.google_plus_url}"
-		@client.authorization.redirect_uri = "#{GoogleApiInterface.host}oauth2callback"
+		@client.authorization.redirect_uri = "#{GoogleApiInterface.host}sessions/google_auth_callback"
 	end
 	
 	def authorization_uri

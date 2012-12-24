@@ -15,7 +15,7 @@ describe GoogleApiInterface do
 				"access_type" => "offline",
 				"approval_prompt" => "force",
 				"client_id" => "1030260537524.apps.googleusercontent.com",
-				"redirect_uri" => "http://localhost:3000/oauth2callback",
+				"redirect_uri" => "http://localhost:3000/sessions/google_auth_callback",
 				"response_type" => "code",
 				"scope" =>  "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
 			}
@@ -30,8 +30,6 @@ describe GoogleApiInterface do
 			
 			subject.exchange_code_for_refresh_token("code").should == "refresh_token"
 		end
-		
-		it "raises an error if it fails to exchange the code for the tokens"
 	end
 	
 	describe "#current_user_email" do

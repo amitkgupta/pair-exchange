@@ -20,28 +20,45 @@ shared_examples "a new login attempt" do
 			expect { subject }.to_not change { session }
 		end
 	end
-
-	context "when no authorization code is provided" do
-		it "should clear the session email and refresh token" do
-			expect { post :create }.to_not change { session }
-		end
-	end
 end
 
 describe SessionsController do
-  	describe "#create" do
+  	describe "#google_auth_callback" do
   		subject do
-  			post :create, code: "code"
+  			get :google_auth_callback, code: "code"
   		end
   		
-  		it "should route from /oauth2callback" do
-  			{ get: "/oauth2callback?code=code" }.should route_to({
-  				controller: "sessions",
-  				action: "create"
-  			})
-  		end
-  		  	
-    	it "should not log in a non-pivotal user"
+		describe "routing from sessions/google_auth_callback" do
+			context "when a code is given in the query parameter" do
+				it "should route successfully" do
+					pending "There is a known issue with RSpec testing routes with constraints"
+					
+					{ get: 'sessions/google_auth_callback', code: 'code' }.should route_to(
+						controller: 'sessions',
+						action: 'google_auth_callback'
+					)
+				end
+			end
+			
+			context "when no code is given" do
+				it "should not route" do
+					pending "There is a known issue with RSpec testing routes with constraints"
+
+					{ get: 'sessions/google_auth_callback' }.should_not be_routable
+				end
+			end
+		end
+				
+      	it "should not log in a non-pivotal user" do
+    		pending "if we implement this, can we get an @pivotallabs.com test account for request specs?"
+    		
+    		GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_return("new_refresh_token")
+			GoogleApiInterface.any_instance.stub(:current_user_email).and_return("pivotallabs.com@thoughtbot.com")
+				
+			session.should be_blank
+				
+			expect { subject }.to_not change { session }
+		end    			
     	
     	describe "redirecting" do
     		before do
