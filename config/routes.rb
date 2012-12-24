@@ -10,7 +10,7 @@ PairExchange::Application.routes.draw do
   resources :projects, except: :destroy
   
   resources :interests, only: [:create]
-  delete '/interests', {
+  delete '/interest', {
   	to: 'interests#destroy',
   	as: :destroy_interest
   }

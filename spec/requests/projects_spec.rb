@@ -46,12 +46,4 @@ describe 'Listing projects', js: true do
     page.should_not have_content('My Lovely Project')
     page.should have_content('Pairing on Starcraft with Dan Hansen')
   end
-
-  it 'allows you to express interest in a project' do
-    page.should_not have_content('You are interested in My Lovely Project')
-  
-    click_on "I'm interested in My Lovely Project"
-    
-    page.should have_content('You are interested in My Lovely Project')
-  end
 end

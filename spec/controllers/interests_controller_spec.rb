@@ -11,7 +11,7 @@ describe InterestsController do
     end
     
     specify do
-      {delete: '/interests'}.should route_to(controller: 'interests', action: 'destroy')
+      {delete: '/interest'}.should route_to(controller: 'interests', action: 'destroy')
     end
   end
 
