@@ -1,12 +1,16 @@
 %table
   %thead
     %tr
+      %th Project Owner
       %th Project Name
       %th Edit
       %th Interest
     - @projects.each do |project|
       %tr
-        %td= project.name
+        %td
+          .owner_email= project.owner
+        %td
+          .project_name= project.name
         %td= link_to("Edit #{project.name}", edit_project_path(project))
         - if project.interest_from?(current_user)
           %td= "You are interested in #{project.name}"
