@@ -23,6 +23,7 @@ group :development do
 end
 
 group :test do
+  gem "shoulda-matchers"
   gem 'rake'
   gem 'webmock'
   gem 'database_cleaner'
