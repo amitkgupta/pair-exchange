@@ -1,7 +1,9 @@
 class Interest
 	def self.create(project, user)
 		project.interested_users << user
-		user.save!
-		project.save!
+	end
+	
+	def self.destroy(project, user)
+		project.interested_users.delete(user)
 	end
 end
