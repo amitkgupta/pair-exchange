@@ -9,7 +9,6 @@ gem "less-rails"
 gem 'twitter-bootstrap-rails'
 gem 'thin'
 gem 'google-api-client'
-gem 'pg'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -20,6 +19,7 @@ end
 
 group :development do
   gem 'heroku_san'
+  gem 'pg'
 end
 
 group :test do
@@ -33,5 +33,6 @@ end
 group :test, :development do
   gem 'rspec-rails'
   gem 'smooth-jazz-nyan-cat-formatter'
+  gem 'sqlite3'
   gem 'factory_girl'
 end
