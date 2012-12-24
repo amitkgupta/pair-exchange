@@ -8,14 +8,18 @@ PairExchange::Application.routes.draw do
   root to: 'projects#index'
 
   resources :projects, except: :destroy
-  resources :interests, only: :create
+  
+  resources :interests, only: [:create]
+  delete '/interests', {
+  	to: 'interests#destroy',
+  	as: :destroy_interest
+  }
 
   get '/sessions/google_auth_callback', { 
   	to: 'sessions#google_auth_callback', 
   	as: :google_auth_callback,
   	constraints: GoogleCallbackConstraint.new
   }
-  
   get '/logout', {
     to: 'sessions#logout',
     as: :logout
