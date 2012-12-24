@@ -8,10 +8,6 @@ describe 'Listing projects', js: true do
     
  	login_test_user
   end
-  
-  after do
-  	visit logout_path
-  end
 
   it 'shows a list of active projects on the home page' do
     page.should have_content('My Lovely Project')
