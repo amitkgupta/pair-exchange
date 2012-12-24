@@ -1,10 +1,10 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :owner, :description, :office, :technology, :finished
-  has_many :interests
+  attr_accessible :name, :description, :office, :technology, :finished
+  
+  belongs_to :owner, inverse_of: :projects, class_name: "User", foreign_key: "user_id"
+  validates_presence_of :owner
 
-  def interest_from?(user)
-    interests.where(:user => user).any?
-  end
+  has_and_belongs_to_many :interested_users, class_name: "User"
 
   scope :active, ->{ where(finished: false) }
 end

@@ -8,7 +8,9 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    Project.create(params[:project])
+    project = Project.new(params[:project])
+    project.owner = current_user
+    project.save!
     redirect_to(projects_path)
   end
 

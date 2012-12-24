@@ -1,28 +1,35 @@
 require 'spec_helper'
 
-shared_examples "a new login attempt" do
-	context "when a valid authorization code is provided" do
-		it "should set the session email and refresh token" do
-			GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_return("new_refresh_token")
-			GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
-			
-			subject    		
-					
-			session[:email].should == "someone@pivotallabs.com"
-			session[:google_api_refresh_token].should == "new_refresh_token"
-		end
-	end
-
-	context "when an invalid authorization code is provided" do
-		it "should not reset the session email and refresh token" do
-			GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_raise("Google API authorization code invalid")
-
-			expect { subject }.to_not change { session }
-		end
-	end
-end
-
 describe SessionsController do
+    describe "#logout" do
+    	subject do
+    		delete :logout
+    	end
+    
+    	it "should route" do
+    		{ delete: 'logout' }.should route_to(
+    			controller: 'sessions',
+    			action: 'logout'
+    		)
+    	end
+    	
+    	it "should reset the session" do
+			fake_login_user
+			
+			session.should_not be_blank
+    		
+    		subject
+    		
+    		session.should be_blank
+    	end
+    	
+    	it "should redirect to root path" do
+    		subject
+    		
+    		response.should redirect_to(root_path)
+    	end
+    end
+    	
   	describe "#google_auth_callback" do
   		subject do
   			get :google_auth_callback, code: "code"
@@ -52,7 +59,7 @@ describe SessionsController do
       	it "should not log in a non-pivotal user" do
     		pending "if we implement this, can we get an @pivotallabs.com test account for request specs?"
     		
-    		GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_return("new_refresh_token")
+    		GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
 			GoogleApiInterface.any_instance.stub(:current_user_email).and_return("pivotallabs.com@thoughtbot.com")
 				
 			session.should be_blank
@@ -62,8 +69,8 @@ describe SessionsController do
     	
     	describe "redirecting" do
     		before do
-    			GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_return("new_refresh_token")
-				GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
+    			GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
+				GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
 			end
 
 			it "should redirect to the root path by default" do
@@ -81,34 +88,56 @@ describe SessionsController do
     		end
     	end
 
-		context "when the session is already ready" do
+		context "when the session already has a google id" do
 			it "should not modify the email or refresh token in the session" do
-				session[:email] = "someone@pivotallabs.com"
-				session[:google_api_refresh_token] = "refresh_token"
+				session[:google_id] = "123456"
 				
-				subject    		
-				
-				session[:email].should == "someone@pivotallabs.com"
-				session[:google_api_refresh_token].should == "refresh_token"
+				expect { subject }.to_not change { session }
 			end
 		end
 		
-		context "when the session is missing an email" do
+		context "when the session has no google id" do
 			before do
-				session[:email].should be_blank
-				session[:google_api_refresh_token] = "refresh_token"
+				session.should be_blank
 			end
 			
-			it_behaves_like "a new login attempt"
-		end
+			context "when a valid authorization code is provided" do
+				it "should set the session google id" do
+					GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
+					GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
+			
+					subject    		
+						
+					session[:google_id].should == "123456"
+				end
+
+				context "when the user is new" do
+					it "should create the new user" do
+						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
+						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
+			
+						expect { subject }.to change { User.where(google_id: "123456").count }.by(1)
+					end
+				end
 		
-		context "when the session is missing a refresh token" do
-			before do
-				session[:google_api_refresh_token].should be_blank
-				session[:email] = "someone@pivotallabs.com"
+				context "when the user is returning" do
+					it "should find the existing user" do
+						User.create(google_id: "123456")
+						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
+						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
+			
+						expect { subject }.to_not change { User.where(google_id: "123456").count }					
+					end
+				end
 			end
 
-			it_behaves_like "a new login attempt"
+			context "when an invalid authorization code is provided" do
+				it "should not reset the session" do
+					GoogleApiInterface.any_instance.stub(:exchange_code_for_refresh_token).with("code").and_raise("Google API authorization code invalid")
+
+					expect { subject }.to_not change { session }
+				end
+			end
 		end
 	end
 end

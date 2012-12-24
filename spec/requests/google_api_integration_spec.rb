@@ -18,6 +18,6 @@ describe 'Google API Integration', js: true do
 		image_sources.each do |source| 
 			source.should include('.googleusercontent.com/')
 			source.should include('/photo.jpg?sz=50')
-		}
+		end
 	end
 end

@@ -8,14 +8,14 @@
     - @projects.each do |project|
       %tr
         %td
-          .owner_email= project.owner
+          .owner_email= project.owner.email
         %td
           .project_name= project.name
         %td= link_to("Edit #{project.name}", edit_project_path(project))
-        - if project.interest_from?(current_user)
+        - if project.interested_users.include?(current_user)
           %td= "You are interested in #{project.name}"
         - else
-          %td= link_to("I'm interested in #{project.name}", project_interests_path(project, :user => current_user), :method => :post)
+          %td= link_to("I'm interested in #{project.name}", interests_path(project_id: project.id), :method => :post)
 
 %a{href: 'projects/new', class: 'btn'}
   %i{class: 'icon-plus'}

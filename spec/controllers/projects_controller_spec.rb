@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ProjectsController do
   before do
-    fake_login("jpivot@pivotallabs.com")
+    fake_login_user
   end
 
   describe 'routing' do
@@ -29,16 +29,16 @@ describe ProjectsController do
 
   describe '#index' do
     before do
-      Project.create(name: 'The Alan Parsons Project')
-      Project.create(name: 'Projecting Fear')
-      Project.create(name: 'Astral Projection')
-      Project.create(name: 'A project')
-      Project.create(name: 'A finished project', finished: true)
+	  create(:project, name: 'The Alan Parsons Project')
+	  create(:project, name: 'Projecting Fear')
+	  create(:project, name: 'Astral Projection')
+	  create(:project, name: 'A project')
+	  create(:project, name: 'A finished project', finished: true)
     end
 
     it 'assigns all the unfinished Projects' do
       get :index
-      assigns(:projects).should == Project.where(:finished => false)
+      assigns(:projects).should == Project.active
     end
   end
 
@@ -67,19 +67,18 @@ describe ProjectsController do
       expect do
         post :create, project:
           { name: 'asdf',
-            owner: 'zxcv',
             office: 'SF',
             technology: 'Cardboard'
           }
       end.to change(Project, :count).by(1)
       Project.last.name.should == 'asdf'
-      Project.last.owner.should == 'zxcv'
+      Project.last.owner.should == fake_logged_in_user
       Project.last.office.should == 'SF'
       Project.last.technology.should == 'Cardboard'
     end
 
     it 'redirects to /' do
-      post :create, project: {name: 'asdf', owner: 'zxcv'}
+      post :create, project: {name: 'asdf'}
       response.should redirect_to('/projects')
     end
   end
@@ -88,15 +87,14 @@ describe ProjectsController do
     let(:project) { create(:project) }
     it 'updates a project with the given params' do
       expect do
-        put :update, id: project.to_param, project: {name: 'asdf', owner: 'zxcv'}
+        put :update, id: project.to_param, project: {name: 'new name'}
       end.to change(Project, :count).by(1)
       project.reload
-      project.name.should == 'asdf'
-      project.owner.should == 'zxcv'
+      project.name.should == 'new name'
     end
 
     it 'redirects to /' do
-      put :update, id: project.to_param, project: {name: 'asdf', owner: 'zxcv'}
+      put :update, id: project.to_param, project: {name: 'new name'}
       response.should redirect_to('/projects')
     end
   end

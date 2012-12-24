@@ -16,8 +16,8 @@ describe ApplicationController do
 		
 		context "if the user is logged in" do
 			it "should not redirect the user" do
-				session[:email] = "someone@pivotallabs.com"
-				session[:google_api_refresh_token] = "refresh_token"
+				User.create(google_id: "123456")
+				session[:google_id] = "123456"
 				
 				get :index
 				

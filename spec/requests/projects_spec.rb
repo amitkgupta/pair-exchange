@@ -2,12 +2,19 @@ require 'spec_helper'
 
 describe 'Listing projects', js: true do
   before do
-	Project.create!(name: 'My Lovely Project', owner: 'pear.programming@gmail.com')
-	Project.create!(name: 'My Lonely Project', owner: 'o.solo.mio@gmail.com')
-	Project.create!(name: 'My Done Project', finished: true)
+    friendly_user = create(:user, email: 'pear.programming@gmail.com')
+    loner = create(:user, email: 'o.solo.mio@gmail.com')
+    
+    create(:project, name: 'My Lovely Project', owner: friendly_user)
+	create(:project, name: 'My Lonely Project', owner: loner)
+	create(:project, name: 'My Done Project', finished: true)
     
  	login_test_user
-  end			
+  end
+  
+  after do
+  	visit logout_path
+  end
 
   it 'shows a list of active projects on the home page' do
     page.should have_content('My Lovely Project')

@@ -22,13 +22,21 @@ describe GoogleApiInterface do
 		end
 	end
 	
-	describe "#exchange_code_for_refresh_token" do
-		it "exchanges the code for a refresh token" do
+	describe "#authorize_from_code" do
+		it "fetches an access token with the given code" do
 			subject.client.authorization.should_receive(:code=).with("code")
 			subject.client.authorization.should_receive(:fetch_access_token!)
-			subject.client.authorization.stub(:refresh_token).and_return("refresh_token")
 			
-			subject.exchange_code_for_refresh_token("code").should == "refresh_token"
+			subject.authorize_from_code("code")
+		end
+	end
+	
+	describe "#authorize_from_refresh_token" do
+		it "fetches an access token with the given refresh_token" do
+			subject.client.authorization.should_receive(:refresh_token=).with("refresh_token")
+			subject.client.authorization.should_receive(:fetch_access_token!)
+			
+			subject.authorize_from_refresh_token("refresh_token")
 		end
 	end
 	
@@ -48,20 +56,36 @@ describe GoogleApiInterface do
 		end
 	end
 	
+	describe "#current_user_google_id" do
+		it "returns the current user's google id" do
+			oauth2_api = OpenStruct.new(userinfo: OpenStruct.new(get: :user_info_get_method))
+			response = OpenStruct.new(data: OpenStruct.new(id: '123456'))
+
+			subject.client.should_receive(:discovered_api)
+				.with('oauth2')
+				.and_return(oauth2_api)
+			subject.client.should_receive(:execute)
+				.with(api_method: :user_info_get_method)
+				.and_return(response)
+				
+			subject.current_user_google_id.should == '123456'
+		end
+	end
+	
 	describe "#image_url_for_user" do
 		it "returns the given user's Google+ profile photo url" do
-			google_plus_api = OpenStruct.new(people: OpenStruct.new(search: :search_method))
-			top_search_result = OpenStruct.new(image: OpenStruct.new(url: "http://some.image/url.jpg"))
-			response = OpenStruct.new(data: OpenStruct.new(items: [top_search_result]))
+			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
+			google_user = OpenStruct.new(image: OpenStruct.new(url: "http://some.image/url.jpg"))
+			response = OpenStruct.new(data: google_user)
 					
 			subject.client.should_receive(:discovered_api)
 				.with('plus')
 				.and_return(google_plus_api)
 			subject.client.should_receive(:execute)
-				.with(api_method: :search_method, parameters: {'query' => "someone@pivotallabs.com"})
+				.with(:user_get_method, {'userId' => "123456"})
 				.and_return(response)
 			
-			subject.image_url_for_user("someone@pivotallabs.com").should == "http://some.image/url.jpg"
+			subject.image_url_for_user("123456").should == "http://some.image/url.jpg"
 		end
 	end
 end

@@ -1,14 +1,20 @@
 class SessionsController < ApplicationController
-	skip_before_filter :require_google_api_access
+	skip_before_filter :require_current_user
 	
 	def google_auth_callback
-		unless session_ready?
+		unless current_user.present?
 			begin
-				session[:google_api_refresh_token] = google_api_interface.exchange_code_for_refresh_token(params[:code])
-				session[:email] = google_api_interface.current_user_email
+				google_api_interface.authorize_from_code(params[:code])
+				session[:google_id] = google_api_interface.current_user_google_id
+				User.find_or_create_by_google_id(session[:google_id])
 			rescue
 			end
 		end
 		redirect_to session.delete(:final_redirect) || root_path
+	end
+	
+	def logout
+		reset_session
+		redirect_to root_path
 	end
 end

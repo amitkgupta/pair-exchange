@@ -20,20 +20,28 @@ class GoogleApiInterface
 		@client.authorization.authorization_uri
 	end
 	
-	def exchange_code_for_refresh_token(code)
+	def authorize_from_code(code)
 		@client.authorization.code = code
 		@client.authorization.fetch_access_token!
-		@client.authorization.refresh_token
+	end
+	
+	def authorize_from_refresh_token(refresh_token)
+		@client.authorization.refresh_token = refresh_token
+		@client.authorization.fetch_access_token!
 	end
 	
 	def current_user_email
 		@client.execute(api_method: @client.discovered_api('oauth2').userinfo.get).data.email
 	end
+
+	def current_user_google_id
+		@client.execute(api_method: @client.discovered_api('oauth2').userinfo.get).data.id
+	end
 	
-	def image_url_for_user(email)
+	def image_url_for_user(google_id)
 		@client.execute(
-			api_method: @client.discovered_api('plus').people.search,
-			parameters: {'query' => email}
-		).data.items[0].image.url
+		    @client.discovered_api('plus').people.get,
+			{'userId' => google_id}
+		).data.image.url
 	end
 end

@@ -1,9 +1,8 @@
 = form_for(@project) do |f|
   = f.label(:name)
   = f.text_field(:name)
-  = f.label(:owner)
-  = current_user
-  = hidden_field_tag(:owner, current_user)
+  = f.label("Owned by")
+  = google_api_interface.image_url_for_user(@project.owner.google_id)
   = f.label(:office)
   = f.select(:office, ['SF', 'NY', 'other'])
   = f.label(:technology)
