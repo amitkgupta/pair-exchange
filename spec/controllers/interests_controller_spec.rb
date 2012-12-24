@@ -12,7 +12,7 @@ describe InterestsController do
   end
 
   describe 'create' do
-    let(:project) { create(:project) }
+    let(:project) { Project.create(owner: friendly_user) }
     
     subject do
     	post :create, project_id: project.id

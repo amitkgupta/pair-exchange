@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
 			begin
 				google_api_interface.authorize_from_code(params[:code])
 				session[:google_id] = google_api_interface.current_user_google_id
-				User.find_or_create_by_google_id(session[:google_id])
+				user = User.find_or_initialize_by_google_id(session[:google_id])
+				user.update_attributes(email: google_api_interface.current_user_email)
 			rescue
 			end
 		end

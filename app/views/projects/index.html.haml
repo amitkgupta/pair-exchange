@@ -8,7 +8,7 @@
     - @projects.each do |project|
       %tr
         %td
-          .owner_email= project.owner.email
+          %img{src: "#{google_api_interface.image_url_for_user(project.owner.google_id)}"}
         %td
           .project_name= project.name
         %td= link_to("Edit #{project.name}", edit_project_path(project))

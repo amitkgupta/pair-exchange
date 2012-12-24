@@ -4,6 +4,7 @@ require 'ostruct'
 describe GoogleApiInterface do
 	before do
 		described_class.stub(:host).and_return("http://localhost:3000/")
+		described_class.stub(:permanent_refresh_token).and_return("permanent_refresh_token")
 	end
 	
 	describe "#authorization_uri" do
@@ -73,11 +74,12 @@ describe GoogleApiInterface do
 	end
 	
 	describe "#image_url_for_user" do
-		it "returns the given user's Google+ profile photo url" do
+		it "refreshses access and then returns the given user's Google+ profile photo url" do
 			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
 			google_user = OpenStruct.new(image: OpenStruct.new(url: "http://some.image/url.jpg"))
 			response = OpenStruct.new(data: google_user)
 					
+			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 			subject.client.should_receive(:discovered_api)
 				.with('plus')
 				.and_return(google_plus_api)
@@ -86,6 +88,24 @@ describe GoogleApiInterface do
 				.and_return(response)
 			
 			subject.image_url_for_user("123456").should == "http://some.image/url.jpg"
+		end
+		
+		context "when the search yields no result" do
+			it "should yield the default user image path" do
+				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
+				error = OpenStruct.new(error: :no_results)
+				response = OpenStruct.new(data: error)		
+
+				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
+				subject.client.should_receive(:discovered_api)
+					.with('plus')
+					.and_return(google_plus_api)
+				subject.client.should_receive(:execute)
+					.with(:user_get_method, {'userId' => "123456"})
+					.and_return(response)
+				
+				subject.image_url_for_user("123456").should == "assets/default_google_profile_image.png"
+			end
 		end
 	end
 end

@@ -3,11 +3,11 @@ require 'spec_helper'
 describe SessionsController do
     describe "#logout" do
     	subject do
-    		delete :logout
+    		get :logout
     	end
     
     	it "should route" do
-    		{ delete: 'logout' }.should route_to(
+    		{ get: 'logout' }.should route_to(
     			controller: 'sessions',
     			action: 'logout'
     		)
@@ -54,18 +54,7 @@ describe SessionsController do
 					{ get: 'sessions/google_auth_callback' }.should_not be_routable
 				end
 			end
-		end
-				
-      	it "should not log in a non-pivotal user" do
-    		pending "if we implement this, can we get an @pivotallabs.com test account for request specs?"
-    		
-    		GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
-			GoogleApiInterface.any_instance.stub(:current_user_email).and_return("pivotallabs.com@thoughtbot.com")
-				
-			session.should be_blank
-				
-			expect { subject }.to_not change { session }
-		end    			
+		end  			
     	
     	describe "redirecting" do
     		before do
@@ -115,8 +104,19 @@ describe SessionsController do
 					it "should create the new user" do
 						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
 						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
-			
+						GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
+
 						expect { subject }.to change { User.where(google_id: "123456").count }.by(1)
+					end
+					
+					it "should set the user's email" do
+						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
+						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
+						GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
+			
+						subject
+						
+						User.find_by_google_id("123456").email.should == "someone@pivotallabs.com"
 					end
 				end
 		

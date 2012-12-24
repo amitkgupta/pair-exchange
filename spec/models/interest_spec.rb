@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Interest do
 	describe "create" do
 		it "creates an interest link between given user and project" do
-			user = create(:user)
-			project = create(:project)
+			user = User.create(email: "foo@bar.com", google_id: "123455")
+			project = Project.create(owner: user)
 			
 			project.interested_users.should be_blank
 			user.interests.should be_blank

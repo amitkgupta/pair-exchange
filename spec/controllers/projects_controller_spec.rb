@@ -29,11 +29,11 @@ describe ProjectsController do
 
   describe '#index' do
     before do
-	  create(:project, name: 'The Alan Parsons Project')
-	  create(:project, name: 'Projecting Fear')
-	  create(:project, name: 'Astral Projection')
-	  create(:project, name: 'A project')
-	  create(:project, name: 'A finished project', finished: true)
+	  Project.create(name: 'The Alan Parsons Project', owner: friendly_user)
+	  Project.create(name: 'Projecting Fear', owner: friendly_user)
+	  Project.create(name: 'Astral Projection', owner: friendly_user)
+	  Project.create(name: 'A project', owner: friendly_user)
+	  Project.create(name: 'A finished project', finished: true, owner: friendly_user)
     end
 
     it 'assigns all the unfinished Projects' do
@@ -52,7 +52,7 @@ describe ProjectsController do
   end
 
   describe 'edit' do
-    let(:project) { create(:project) }
+    let(:project) { Project.create(owner: friendly_user) }
 
     it 'assigns the Project' do
       get :edit, id: project.to_param
@@ -84,7 +84,7 @@ describe ProjectsController do
   end
 
   describe 'update' do
-    let(:project) { create(:project) }
+    let(:project) { Project.create(owner: friendly_user) }
     it 'updates a project with the given params' do
       expect do
         put :update, id: project.to_param, project: {name: 'new name'}

@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe Project do
-  pending { should belong_to(:user) }
-  pending { should validate_presence_of(:user) }
-  
+  pending { should belong_to(:owner) }
+  pending { should validate_presence_of(:owner) }
+  pending { should allow_mass_assignment_of(:owner) }
+
   describe '.active' do
-    let!(:finished_project) { create(:project, name: 'Finished', finished: true) }
-    let!(:active_project) { create(:project, name: 'Active', finished: false) }
+    let!(:finished_project) { Project.create(owner: friendly_user, finished: true) }
+    let!(:active_project) { Project.create(owner: friendly_user, finished: false) }
 
     it 'contains only active projects' do
       Project.active.should include(active_project)

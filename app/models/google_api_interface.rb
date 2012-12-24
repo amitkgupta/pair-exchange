@@ -5,7 +5,9 @@ class GoogleApiInterface
 	def self.user_email_url; "https://www.googleapis.com/auth/userinfo.email"; end
 	def self.google_plus_url; "https://www.googleapis.com/auth/plus.me"; end
 	def self.host; HOST; end
-	
+	def self.permanent_refresh_token; PERMANENT_REFRESH_TOKEN; end
+	def self.default_user_profile_image; "assets/default_google_profile_image.png"; end
+		
 	attr_reader :client
 
 	def initialize
@@ -39,9 +41,12 @@ class GoogleApiInterface
 	end
 	
 	def image_url_for_user(google_id)
-		@client.execute(
+		authorize_from_refresh_token(GoogleApiInterface.permanent_refresh_token)
+		image = @client.execute(
 		    @client.discovered_api('plus').people.get,
 			{'userId' => google_id}
-		).data.image.url
+		).data.image
+		
+		image.nil?? GoogleApiInterface.default_user_profile_image : image.url
 	end
 end

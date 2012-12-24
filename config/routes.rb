@@ -16,7 +16,7 @@ PairExchange::Application.routes.draw do
   	constraints: GoogleCallbackConstraint.new
   }
   
-  delete '/logout', {
+  get '/logout', {
     to: 'sessions#logout',
     as: :logout
   }
