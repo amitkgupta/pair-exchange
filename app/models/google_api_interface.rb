@@ -7,6 +7,7 @@ class GoogleApiInterface
 	def self.host; HOST; end
 	def self.permanent_refresh_token; PERMANENT_REFRESH_TOKEN; end
 	def self.default_user_profile_image; "assets/default_google_profile_image.png"; end
+	def self.default_user_display_name; "Jonathan Dough"; end
 		
 	attr_reader :client
 
@@ -48,5 +49,13 @@ class GoogleApiInterface
 		).data.image
 		
 		image.nil?? GoogleApiInterface.default_user_profile_image : image.url
+	end
+	
+	def display_name_for_user(google_id)
+		authorize_from_refresh_token(GoogleApiInterface.permanent_refresh_token)
+		@client.execute(
+		    @client.discovered_api('plus').people.get,
+			{'userId' => google_id}
+		).data.displayName || GoogleApiInterface.default_user_display_name
 	end
 end

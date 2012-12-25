@@ -108,4 +108,40 @@ describe GoogleApiInterface do
 			end
 		end
 	end
+
+	describe "#display_name_for_user" do
+		it "refreshses access and then returns the given user's Google+ display name" do
+			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
+			google_user = OpenStruct.new(displayName: "Jay Pivot")
+			response = OpenStruct.new(data: google_user)
+					
+			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
+			subject.client.should_receive(:discovered_api)
+				.with('plus')
+				.and_return(google_plus_api)
+			subject.client.should_receive(:execute)
+				.with(:user_get_method, {'userId' => "123456"})
+				.and_return(response)
+			
+			subject.display_name_for_user("123456").should == "Jay Pivot"
+		end
+		
+		context "when the search yields no result" do
+			it "should yield 'Jonathan Dough'" do
+				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
+				error = OpenStruct.new(error: :no_results)
+				response = OpenStruct.new(data: error)		
+
+				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
+				subject.client.should_receive(:discovered_api)
+					.with('plus')
+					.and_return(google_plus_api)
+				subject.client.should_receive(:execute)
+					.with(:user_get_method, {'userId' => "123456"})
+					.and_return(response)
+				
+				subject.display_name_for_user("123456").should == "Jonathan Dough"
+			end
+		end
+	end
 end
