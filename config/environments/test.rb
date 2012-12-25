@@ -37,4 +37,3 @@ PairExchange::Application.configure do
 end
 
 HOST = "http://localhost:8378/"
-PERMANENT_REFRESH_TOKEN = "1/BoYtbPveDrgBPGNIEYWaRG_YZDYkGmNuZUecudyiKa4"

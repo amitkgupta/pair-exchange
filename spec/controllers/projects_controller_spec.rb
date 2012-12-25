@@ -36,9 +36,15 @@ describe ProjectsController do
 	  Project.create(name: 'A finished project', finished: true, owner: friendly_user)
     end
 
-    it 'assigns all the unfinished Projects' do
+    it 'presents all the unfinished Projects' do
       get :index
-      assigns(:projects).should == Project.active
+      assigns(:projects).map { |project| project.name }.should == [
+      	'The Alan Parsons Project',
+      	'Projecting Fear',
+      	'Astral Projection',
+      	'A project'
+      ]
+      assigns(:projects).each { |project| project.should be_a(ProjectPresenter) }
     end
   end
 
@@ -57,8 +63,7 @@ describe ProjectsController do
     it 'assigns the Project' do
       get :edit, id: project.to_param
       project = assigns(:project)
-      project.should be_persisted
-      project.should be_a(Project)
+      project.should be_a(ProjectPresenter)
     end
   end
 
@@ -84,11 +89,11 @@ describe ProjectsController do
   end
 
   describe 'update' do
-    let(:project) { Project.create(owner: friendly_user) }
+    let!(:project) { Project.create(owner: friendly_user) }
     it 'updates a project with the given params' do
       expect do
         put :update, id: project.to_param, project: {name: 'new name'}
-      end.to change(Project, :count).by(1)
+      end.to change(Project, :count).by(0)
       project.reload
       project.name.should == 'new name'
     end

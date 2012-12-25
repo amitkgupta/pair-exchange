@@ -1,4 +1,4 @@
-require_relative '../../app/models/google_api_interface.rb'
+require_relative '../../app/external_interfaces/google_api_interface.rb'
 require 'ostruct'
 
 describe GoogleApiInterface do
@@ -92,7 +92,7 @@ describe GoogleApiInterface do
 		end
 		
 		context "when the search yields no result" do
-			it "should yield the default user image path" do
+			it "should return nothing" do
 				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
 				mock_data = double()
 				mock_data.stub(:to_hash).and_return({"error" => "errors"})
@@ -106,7 +106,7 @@ describe GoogleApiInterface do
 					.with(:user_get_method, {'userId' => "123456"})
 					.and_return(response)
 				
-				subject.image_url_for_user("123456").should == "http://localhost:3000/assets/default_google_profile_image.png"
+				subject.image_url_for_user("123456").should be_blank
 			end
 		end
 	end
@@ -130,7 +130,7 @@ describe GoogleApiInterface do
 		end
 		
 		context "when the search yields no result" do
-			it "should yield 'Jonathan Dough'" do
+			it "should return nothing" do
 				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
 				mock_data = double()
 				mock_data.stub(:to_hash).and_return({"error" => "errors"})
@@ -144,7 +144,7 @@ describe GoogleApiInterface do
 					.with(:user_get_method, {'userId' => "123456"})
 					.and_return(response)
 				
-				subject.display_name_for_user("123456").should == "Jonathan Dough"
+				subject.display_name_for_user("123456").should be_blank
 			end
 		end
 	end

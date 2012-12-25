@@ -1,6 +1,8 @@
+require_relative '../presenters/project_presenter.rb'
+
 class ProjectsController < ApplicationController
   def index
-    @projects = Project.active
+    @projects = Project.active.map { |project| ProjectPresenter.new(project) }
   end
 
   def new
@@ -15,7 +17,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = Project.find(params[:id])
+    @project = ProjectPresenter.new(Project.find(params[:id]))
   end
 
   def update

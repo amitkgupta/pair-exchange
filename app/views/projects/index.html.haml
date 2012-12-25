@@ -4,22 +4,14 @@
       %th Project Owner
       %th Project Name
       %th Edit
-      %th Current Interest
-      %th Change Interest
     - @projects.each do |project|
       %tr
         %td
-          %img{src: "#{google_api_interface.image_url_for_user(project.owner.google_id)}"}
-          .display-name= google_api_interface.display_name_for_user(project.owner.google_id)
+          %img{src: "#{project.owner.profile_image_url}"}
+          .display-name= project.owner.display_name
         %td
           .project_name= project.name
         %td= link_to("Edit #{project.name}", edit_project_path(project))
-        - if project.interested_users.include?(current_user)
-          %td= "You are interested in #{project.name}"
-          %td= link_to("I'm no longer interested in #{project.name}", destroy_interest_path(project_id: project.id), :method => :delete)
-        - else
-          %td= "You have not expressed interest in #{project.name}"
-          %td= link_to("I'm interested in #{project.name}", interests_path(project_id: project.id), :method => :post)
 
 %a{href: 'projects/new', class: 'btn'}
   %i{class: 'icon-plus'}

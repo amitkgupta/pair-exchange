@@ -54,8 +54,8 @@ describe 'Listing projects', js: true do
 		click_on 'Edit My Lovely Project'
 		
 		page.should have_content('Owned By')
-		page.should have_content('Jonathan Dough')
-		page.find('img')['src'].should == "/assets/default_google_profile_image.png"
+		page.should have_content('pear.programming@gmail.com')
+		page.find('img')['src'].should == "http://localhost:8378/assets/default_google_profile_image.png"
 	end
   end
 end

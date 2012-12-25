@@ -5,10 +5,7 @@ class GoogleApiInterface
 	def self.user_email_url; "https://www.googleapis.com/auth/userinfo.email"; end
 	def self.google_plus_url; "https://www.googleapis.com/auth/plus.me"; end
 	def self.host; HOST; end
-	def self.permanent_refresh_token; PERMANENT_REFRESH_TOKEN; end
-	def self.default_user_profile_image_url; "#{host}assets/default_google_profile_image.png"; end
-	def self.default_user_display_name; "Jonathan Dough"; end
-		
+			
 	attr_reader :client
 
 	def initialize
@@ -48,7 +45,7 @@ class GoogleApiInterface
 			{'userId' => google_id}
 		).data.to_hash
 		
-		data.has_key?("image") ? data["image"]["url"] : GoogleApiInterface.default_user_profile_image_url
+		data.has_key?("image") ? data["image"]["url"] : nil
 	end
 	
 	def display_name_for_user(google_id)
@@ -58,6 +55,6 @@ class GoogleApiInterface
 			{'userId' => google_id}
 		).data.to_hash
 		
-		data.has_key?("displayName") ?  data["displayName"] : GoogleApiInterface.default_user_display_name
+		data.has_key?("displayName") ?  data["displayName"] : nil
 	end
 end

@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe Project do
-  pending { should belong_to(:owner) }
-  pending { should validate_presence_of(:owner) }
-  pending { should allow_mass_assignment_of(:owner) }
+  pending "write tests for associations, validations, mass assignment"
 
   describe '.active' do
     let!(:finished_project) { Project.create(owner: friendly_user, finished: true) }

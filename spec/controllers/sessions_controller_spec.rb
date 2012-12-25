@@ -36,30 +36,18 @@ describe SessionsController do
   		end
   		
 		describe "routing from sessions/google_auth_callback" do
-			context "when a code is given in the query parameter" do
-				it "should route successfully" do
-					pending "There is a known issue with RSpec testing routes with constraints"
-					
-					{ get: 'sessions/google_auth_callback', code: 'code' }.should route_to(
-						controller: 'sessions',
-						action: 'google_auth_callback'
-					)
-				end
+			it "should route successfully when a code is given in the query string" do
+				pending "There is a known issue with RSpec testing routes with constraints"
 			end
 			
-			context "when no code is given" do
-				it "should not route" do
-					pending "There is a known issue with RSpec testing routes with constraints"
-
-					{ get: 'sessions/google_auth_callback' }.should_not be_routable
-				end
+			it "should not route when there is no code" do
+				pending "There is a known issue with RSpec testing routes with constraints"
 			end
 		end  			
     	
     	describe "redirecting" do
     		before do
     			GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
-				GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
 			end
 
 			it "should redirect to the root path by default" do
@@ -78,7 +66,7 @@ describe SessionsController do
     	end
 
 		context "when the session already has a google id" do
-			it "should not modify the email or refresh token in the session" do
+			it "should not modify the session" do
 				session[:google_id] = "123456"
 				
 				expect { subject }.to_not change { session }
@@ -101,32 +89,66 @@ describe SessionsController do
 				end
 
 				context "when the user is new" do
-					it "should create the new user" do
+					before do
 						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
 						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
 						GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
-
-						expect { subject }.to change { User.where(google_id: "123456").count }.by(1)
+						GoogleApiInterface.any_instance.stub(:display_name_for_user).with("123456").and_return("An Lo")
+						
+						User.where(google_id: "123456").count.should == 0
 					end
 					
-					it "should set the user's email" do
-						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
-						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
-						GoogleApiInterface.any_instance.stub(:current_user_email).and_return("someone@pivotallabs.com")
-			
-						subject
+					context "when the Google API delivers all the attributes" do
+						it "should create the new user and set the attributes" do
+							GoogleApiInterface.any_instance.stub(:image_url_for_user).with("123456").and_return("foo.com/img.jpg")
 						
-						User.find_by_google_id("123456").email.should == "someone@pivotallabs.com"
+							subject
+
+							User.where(google_id: "123456").count.should == 1
+							User.find_by_google_id("123456").email.should == "someone@pivotallabs.com"
+							User.find_by_google_id("123456").profile_image_url.should == "foo.com/img.jpg"
+							User.find_by_google_id("123456").display_name.should == "An Lo"
+						end
+					end
+					
+					context "when Google fails to deliver some data" do
+						it "should create the new user and leave the appropriate fields nil" do
+							GoogleApiInterface.any_instance.stub(:image_url_for_user).with("123456").and_return(nil)
+
+							subject
+
+							User.where(google_id: "123456").count.should == 1
+							
+							user = User.find_by_google_id("123456")
+							user.email.should == "someone@pivotallabs.com"
+							user.profile_image_url.should be_blank
+							user.display_name.should == "An Lo"
+						end
 					end
 				end
 		
 				context "when the user is returning" do
-					it "should find the existing user" do
-						User.create(google_id: "123456")
+					it "should update the existing user" do
+						User.create(
+							google_id: "123456",
+							email: "old@email.com",
+							display_name: "Old Name",
+							profile_image_url: "oldsite.com/deleted_photo.jpg"
+						)
+
 						GoogleApiInterface.any_instance.should_receive(:authorize_from_code).with("code")
 						GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return("123456")
+						GoogleApiInterface.any_instance.stub(:current_user_email).and_return("old@email.com")
+						GoogleApiInterface.any_instance.stub(:display_name_for_user).with("123456").and_return("New Name")
+						GoogleApiInterface.any_instance.stub(:image_url_for_user).with("123456").and_return(nil)
 			
-						expect { subject }.to_not change { User.where(google_id: "123456").count }					
+						subject
+			
+						User.where(google_id: "123456").count.should == 1
+						user = User.find_by_google_id("123456")
+						user.display_name.should == "New Name"
+						user.email.should == "old@email.com"
+						user.profile_image_url.should be_blank
 					end
 				end
 			end

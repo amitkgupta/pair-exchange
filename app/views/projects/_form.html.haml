@@ -3,8 +3,8 @@
   = f.text_field(:name)
   - if @project.owner.present?
     %p Owned By
-    %img{src: "#{google_api_interface.image_url_for_user(@project.owner.google_id)}"}
-    .display-name= google_api_interface.display_name_for_user(@project.owner.google_id)
+    %img{src: "#{@project.owner.profile_image_url}"}
+    .display-name= @project.owner.display_name
   = f.label(:office)
   = f.select(:office, ['SF', 'NY', 'other'])
   = f.label(:technology)
