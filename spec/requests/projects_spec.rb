@@ -2,15 +2,22 @@ require 'spec_helper'
 
 describe 'Listing projects', js: true do
   before do
-    Project.create(name: 'My Lovely Project', owner: friendly_user)
-    Project.create(name: 'My Lonely Project', owner: loner)
+    Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
+    Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?')
     Project.create(name: 'My Done Project', owner: loner, finished: true)
     
  	login_test_user
   end
 
-  it 'shows a list of active projects on the home page' do
+  it 'shows the names, descriptions, owners, and technologies of active projects on the home page' do
     page.should have_content('My Lovely Project')
+    page.should have_content('pear.programming@gmail.com')
+    page.should have_content('fun')
+    
+    page.should have_content('My Lonely Project')
+    page.should have_content('o.solo.mioooo@gmail.com')
+    page.should have_content('wot is it?')
+    
     page.should_not have_content('My Done Project')
   end
 

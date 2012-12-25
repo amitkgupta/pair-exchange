@@ -17,12 +17,23 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = ProjectPresenter.new(Project.find(params[:id]))
+    project = Project.find(params[:id])
+    
+    if project.owner == current_user
+      @project = ProjectPresenter.new(Project.find(params[:id]))
+    else
+	  head 403
+    end
   end
 
   def update
-    @project = Project.find(params[:id])
-    @project.update_attributes(params[:project])
-    redirect_to(projects_path)
+    project = Project.find(params[:id])
+    
+    if project.owner == current_user
+      project.update_attributes(params[:project])
+      redirect_to(projects_path)
+    else     	
+      head 403
+    end
   end
 end

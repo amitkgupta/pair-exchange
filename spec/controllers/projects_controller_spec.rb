@@ -58,12 +58,27 @@ describe ProjectsController do
   end
 
   describe 'edit' do
-    let(:project) { Project.create(owner: friendly_user) }
-
-    it 'assigns the Project' do
-      get :edit, id: project.to_param
-      project = assigns(:project)
-      project.should be_a(ProjectPresenter)
+    context 'when the project belongs to the logged in user' do
+      it 'assigns the Project' do
+        get :edit, id: Project.create(owner: fake_logged_in_user).to_param
+        assigns(:project).should be_a(ProjectPresenter)
+      end
+    end
+    
+    context 'when the project does not belong to the logged in user' do
+      before do
+      	fake_logged_in_user.should_not == loner
+      	
+      	get :edit, id: Project.create(owner: loner).to_param
+      end
+      
+      it 'forbids the request' do
+        response.status.should == 403
+      end
+      
+      it 'does not assign the project' do
+        assigns(:project).should be_blank
+      end
     end
   end
 
@@ -89,18 +104,32 @@ describe ProjectsController do
   end
 
   describe 'update' do
-    let!(:project) { Project.create(owner: friendly_user) }
-    it 'updates a project with the given params' do
-      expect do
-        put :update, id: project.to_param, project: {name: 'new name'}
-      end.to change(Project, :count).by(0)
-      project.reload
-      project.name.should == 'new name'
-    end
+    context 'when the project belongs to the logged in user' do
+	  let!(:project) { Project.create(owner: fake_logged_in_user) }
+	  
+      it 'updates a project with the given params' do
+        expect do
+          put :update, id: project.to_param, project: {name: 'new name'}
+        end.to change(Project, :count).by(0)
 
-    it 'redirects to /' do
-      put :update, id: project.to_param, project: {name: 'new name'}
-      response.should redirect_to('/projects')
+        project.reload.name.should == 'new name'
+      end
+
+      it 'redirects to /' do
+        put :update, id: project.to_param, project: {name: 'new name'}
+
+        response.should redirect_to('/projects')
+      end
     end
+    
+    context 'when the project does not belong to the logged in user' do
+      it 'forbids the request' do
+        fake_logged_in_user.should_not == loner
+      
+      	put :update, id: Project.create(owner: loner).to_param, project: {name: 'new'}
+      
+        response.status.should == 403
+      end
+	end
   end
 end
