@@ -5,6 +5,7 @@
       %th Project Name
       %th Description
       %th Technology
+      %th Office
       %th 
     - @projects.each do |project|
       %tr
@@ -17,6 +18,8 @@
           .description= project.description
         %td
           .technology= project.technology
+        %td
+          .office= project.office          
         %td
           - if project.current_user_interested
             %span.recant-interest= link_to image_tag('thumbs-up.png'), interest_path(project_id: project.id), method: :delete

@@ -3,13 +3,13 @@ require 'spec_helper'
 describe 'Projects', js: true do
   before do
     Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
-    Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?')
+    Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?', office: 'SF')
     
  	login_test_user
   end
 
   describe 'listing the projects' do
-    it 'shows the names, descriptions, owners, and technologies of active projects on the home page' do
+    it 'shows the names, descriptions, owners, office, and technologies of active projects on the home page' do
       page.should have_content('My Lovely Project')
       page.should have_content('pear.programming@gmail.com')
       page.should have_content('fun')
@@ -17,6 +17,7 @@ describe 'Projects', js: true do
       page.should have_content('My Lonely Project')
       page.should have_content('o.solo.mioooo@gmail.com')
       page.should have_content('wot is it?')
+      page.should have_content('SF')
     end
   end
 
