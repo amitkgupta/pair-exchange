@@ -17,35 +17,35 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    project = Project.find(params[:id])
-    
-    if project.owner == current_user
-      @project = Project.find(params[:id])
+    ensure_access do |project|
+      @project = project
       @owner = UserPresenter.new(@project.owner)
-    else
-	  head 403
     end
   end
 
   def update
-    project = Project.find(params[:id])
-    
-    if project.owner == current_user
+    ensure_access do |project|
       project.update_attributes(params[:project])
       redirect_to(projects_path)
-    else     	
-      head 403
     end
   end
   
   def destroy
-  	project = Project.find(params[:id])
-    
-    if project.owner == current_user
+    ensure_access do |project|
       project.destroy
       redirect_to(projects_path)
-    else     	
-      head 403
     end
+  end
+  
+  private
+  
+  def ensure_access
+  	project = Project.find(params[:id])
+  	
+  	if project.owner == current_user
+  	  yield(project) 
+  	else 
+  	  head 403
+  	end
   end
 end
