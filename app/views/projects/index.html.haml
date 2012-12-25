@@ -1,19 +1,19 @@
 %table.table
   %thead
     %tr
-      %th Owner
-      %th Project Name
-      %th Description
-      %th Technology
-      %th Office
-      %th 
+      %th.owner-heading Owner
+      %th.project-name-heading Project Name
+      %th.description-heading Description
+      %th.technology-heading Technology
+      %th.office-heading Office
+      %th.actions-heading 
     - @projects.each do |project|
       %tr
         %td
           %img{src: "#{project.owner.profile_image_url}"}
           %span.display-name= project.owner.display_name
         %td
-          .project_name= project.name
+          .project-name= project.name
         %td
           .description= project.description
         %td
