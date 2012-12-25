@@ -30,4 +30,31 @@ describe 'Google API Integration', js: true do
 			end
 		end
 	end
+	
+	describe "display names of owners next to projects" do
+		context "when the owner doesn't have a G+ account (hence no display name)" do
+			it "displays the default" do
+				Project.create(name: 'The Projective Hierarchy', owner: friendly_user)
+	
+				login_test_user
+		
+				page.all('tr')[1].find('.display-name').text.should == "Jonathan Dough"
+			end
+		end
+		
+		context "when the owner does have a G+ display name" do
+			it "displays the name next to the project" do
+				login_test_user
+				
+				click_on "Add project"
+    
+			    within('#new_project') do
+      				fill_in 'Project Name', with: 'Orthogonal Projections'
+			    	click_on 'Create Project'
+			    end
+			    
+				page.all('tr')[1].find('.display-name').text.should == "Jay Pivot"
+			end
+		end
+	end	
 end

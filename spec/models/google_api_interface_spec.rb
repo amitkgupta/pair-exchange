@@ -76,8 +76,9 @@ describe GoogleApiInterface do
 	describe "#image_url_for_user" do
 		it "refreshses access and then returns the given user's Google+ profile photo url" do
 			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
-			google_user = OpenStruct.new(image: OpenStruct.new(url: "http://some.image/url.jpg"))
-			response = OpenStruct.new(data: google_user)
+			mock_data = double()
+			mock_data.stub(:to_hash).and_return({"image" => {"url" => "http://some.image/url.jpg"}})
+			response = OpenStruct.new(data: mock_data)
 					
 			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 			subject.client.should_receive(:discovered_api)
@@ -93,8 +94,9 @@ describe GoogleApiInterface do
 		context "when the search yields no result" do
 			it "should yield the default user image path" do
 				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
-				error = OpenStruct.new(error: :no_results)
-				response = OpenStruct.new(data: error)		
+				mock_data = double()
+				mock_data.stub(:to_hash).and_return({"error" => "errors"})
+				response = OpenStruct.new(data: mock_data)		
 
 				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 				subject.client.should_receive(:discovered_api)
@@ -104,7 +106,7 @@ describe GoogleApiInterface do
 					.with(:user_get_method, {'userId' => "123456"})
 					.and_return(response)
 				
-				subject.image_url_for_user("123456").should == "assets/default_google_profile_image.png"
+				subject.image_url_for_user("123456").should == "http://localhost:3000/assets/default_google_profile_image.png"
 			end
 		end
 	end
@@ -112,8 +114,9 @@ describe GoogleApiInterface do
 	describe "#display_name_for_user" do
 		it "refreshses access and then returns the given user's Google+ display name" do
 			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
-			google_user = OpenStruct.new(displayName: "Jay Pivot")
-			response = OpenStruct.new(data: google_user)
+			mock_data = double()
+			mock_data.stub(:to_hash).and_return({"displayName" => "Jay Pivot"})
+			response = OpenStruct.new(data: mock_data)
 					
 			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 			subject.client.should_receive(:discovered_api)
@@ -129,8 +132,9 @@ describe GoogleApiInterface do
 		context "when the search yields no result" do
 			it "should yield 'Jonathan Dough'" do
 				google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
-				error = OpenStruct.new(error: :no_results)
-				response = OpenStruct.new(data: error)		
+				mock_data = double()
+				mock_data.stub(:to_hash).and_return({"error" => "errors"})
+				response = OpenStruct.new(data: mock_data)		
 
 				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 				subject.client.should_receive(:discovered_api)

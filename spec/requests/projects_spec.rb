@@ -16,6 +16,7 @@ describe 'Listing projects', js: true do
 
   it 'allows you to create a new project' do
     page.should_not have_content('My 8th Grade Science Diorama')
+    page.should_not have_content('Jay Pivot')
   
     click_on "Add project"
     
@@ -29,21 +30,32 @@ describe 'Listing projects', js: true do
 
     current_path.should == projects_path    
     page.should have_content('My 8th Grade Science Diorama')
+    page.should have_content('Jay Pivot')
   end
 
-  it 'allows you to edit a project' do
-    page.should have_content('My Lovely Project')
-    page.should_not have_content('Pairing on Starcraft with Dan Hansen')
+  describe "editing" do
+	it 'allows you to edit a project' do
+    	page.should have_content('My Lovely Project')
+	    page.should_not have_content('Pairing on Starcraft with Dan Hansen')
 
-    click_on 'Edit My Lovely Project'
+	    click_on 'Edit My Lovely Project'
     
-    fill_in 'Project Name', with: 'Pairing on Starcraft with Dan Hansen'
-    fill_in 'Description', with: 'OMG ZERG RUSH'
+    	fill_in 'Project Name', with: 'Pairing on Starcraft with Dan Hansen'
+	    fill_in 'Description', with: 'OMG ZERG RUSH'
     
-    click_on 'Update Project'
+    	click_on 'Update Project'
     
-    current_path.should == projects_path
-    page.should_not have_content('My Lovely Project')
-    page.should have_content('Pairing on Starcraft with Dan Hansen')
+	    current_path.should == projects_path
+    	page.should_not have_content('My Lovely Project')
+	    page.should have_content('Pairing on Starcraft with Dan Hansen')
+	end
+	  
+	it "shows the project owner's display name and photo on the edit form" do
+		click_on 'Edit My Lovely Project'
+		
+		page.should have_content('Owned By')
+		page.should have_content('Jonathan Dough')
+		page.find('img')['src'].should == "/assets/default_google_profile_image.png"
+	end
   end
 end

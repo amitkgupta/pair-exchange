@@ -1,4 +1,4 @@
-%table
+%table.table
   %thead
     %tr
       %th Project Owner
@@ -10,6 +10,7 @@
       %tr
         %td
           %img{src: "#{google_api_interface.image_url_for_user(project.owner.google_id)}"}
+          .display-name= google_api_interface.display_name_for_user(project.owner.google_id)
         %td
           .project_name= project.name
         %td= link_to("Edit #{project.name}", edit_project_path(project))
