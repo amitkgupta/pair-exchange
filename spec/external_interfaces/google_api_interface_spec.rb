@@ -31,16 +31,7 @@ describe GoogleApiInterface do
 			subject.authorize_from_code("code")
 		end
 	end
-	
-	describe "#authorize_from_refresh_token" do
-		it "fetches an access token with the given refresh_token" do
-			subject.client.authorization.should_receive(:refresh_token=).with("refresh_token")
-			subject.client.authorization.should_receive(:fetch_access_token!)
-			
-			subject.authorize_from_refresh_token("refresh_token")
-		end
-	end
-	
+		
 	describe "#current_user_email" do
 		it "returns the current user's email" do
 			oauth2_api = OpenStruct.new(userinfo: OpenStruct.new(get: :user_info_get_method))
@@ -74,13 +65,12 @@ describe GoogleApiInterface do
 	end
 	
 	describe "#image_url_for_user" do
-		it "refreshses access and then returns the given user's Google+ profile photo url" do
+		it "returns the given user's Google+ profile photo url" do
 			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
 			mock_data = double()
 			mock_data.stub(:to_hash).and_return({"image" => {"url" => "http://some.image/url.jpg"}})
 			response = OpenStruct.new(data: mock_data)
 					
-			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 			subject.client.should_receive(:discovered_api)
 				.with('plus')
 				.and_return(google_plus_api)
@@ -98,7 +88,6 @@ describe GoogleApiInterface do
 				mock_data.stub(:to_hash).and_return({"error" => "errors"})
 				response = OpenStruct.new(data: mock_data)		
 
-				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 				subject.client.should_receive(:discovered_api)
 					.with('plus')
 					.and_return(google_plus_api)
@@ -112,13 +101,12 @@ describe GoogleApiInterface do
 	end
 
 	describe "#display_name_for_user" do
-		it "refreshses access and then returns the given user's Google+ display name" do
+		it "returns the given user's Google+ display name" do
 			google_plus_api = OpenStruct.new(people: OpenStruct.new(get: :user_get_method))
 			mock_data = double()
 			mock_data.stub(:to_hash).and_return({"displayName" => "Jay Pivot"})
 			response = OpenStruct.new(data: mock_data)
 					
-			subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 			subject.client.should_receive(:discovered_api)
 				.with('plus')
 				.and_return(google_plus_api)
@@ -136,7 +124,6 @@ describe GoogleApiInterface do
 				mock_data.stub(:to_hash).and_return({"error" => "errors"})
 				response = OpenStruct.new(data: mock_data)		
 
-				subject.should_receive(:authorize_from_refresh_token).with("permanent_refresh_token")
 				subject.client.should_receive(:discovered_api)
 					.with('plus')
 					.and_return(google_plus_api)

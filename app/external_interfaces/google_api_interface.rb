@@ -25,11 +25,6 @@ class GoogleApiInterface
 		@client.authorization.fetch_access_token!
 	end
 	
-	def authorize_from_refresh_token(refresh_token)
-		@client.authorization.refresh_token = refresh_token
-		@client.authorization.fetch_access_token!
-	end
-	
 	def current_user_email
 		@client.execute(api_method: @client.discovered_api('oauth2').userinfo.get).data.email
 	end
@@ -39,7 +34,6 @@ class GoogleApiInterface
 	end
 	
 	def image_url_for_user(google_id)
-		authorize_from_refresh_token(GoogleApiInterface.permanent_refresh_token)
 		data = @client.execute(
 		    @client.discovered_api('plus').people.get,
 			{'userId' => google_id}
@@ -49,7 +43,6 @@ class GoogleApiInterface
 	end
 	
 	def display_name_for_user(google_id)
-		authorize_from_refresh_token(GoogleApiInterface.permanent_refresh_token)
 		data = @client.execute(
 		    @client.discovered_api('plus').people.get,
 			{'userId' => google_id}
