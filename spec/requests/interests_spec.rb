@@ -1,35 +1,33 @@
 require 'spec_helper'
 
-describe 'Expressing interested and disinterest in projects', js: true do
+describe 'Declaring and recanting interest in projects', js: true do
   before do
     Project.create(name: 'My Lovely Project', owner: friendly_user)
     
  	login_test_user
   end
 
-  pending 'allows you to express interest in a project' do
-    page.should_not have_content('You are interested in My Lovely Project')
-    page.should_not have_content("I'm no longer interested in My Lovely Project")
-    page.should have_content("You have not expressed interest in My Lovely Project")
+  it 'allows you to declare interest in a project' do
+    page.should have_css('.declare-interest')
+	page.should_not have_css('.recant-interest')
   
-    click_on "I'm interested in My Lovely Project"
+	page.find('.declare-interest a').click
     
-    page.should have_content('You are interested in My Lovely Project')
-    page.should have_content("I'm no longer interested in My Lovely Project")
-    page.should_not have_content("You have not expressed interest in My Lovely Project")
+	wait_until { page.has_css? '.recant-interest' }
+	page.should_not have_css('.declare-interest')
   end
   
-  context 'for a project you are already interested in' do
-	before do
-	  click_on "I'm interested in My Lovely Project"
+  context 'when you are already interested in a project' do
+  	before do
+	  page.find('.declare-interest a').click
+	  wait_until { page.has_css? '.recant-interest' }
 	end
 	
-	pending 'allows you to recant your interest in the project' do
-      page.should have_content('You are interested in My Lovely Project')
-  
-      click_on "I'm no longer interested in My Lovely Project"
+	it 'allows you to recant your interest in the project' do
+	  page.find('.recant-interest a').click
     
-      page.should have_content('You have not expressed interest in My Lovely Project')
+	  wait_until { page.has_css? '.declare-interest' }
+	  page.should_not have_css('.recant-interest')
 	end
   end
 end

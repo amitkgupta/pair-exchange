@@ -5,6 +5,4 @@ class Project < ActiveRecord::Base
   validates_presence_of :owner
 
   has_and_belongs_to_many :interested_users, class_name: "User"
-
-  scope :active, ->{ where(finished: false) }
 end

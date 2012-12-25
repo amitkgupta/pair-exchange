@@ -25,6 +25,10 @@ describe ProjectsController do
     specify do
       {put: '/projects/1'}.should route_to(controller: 'projects', action: 'update', id: '1')
     end
+    
+    specify do
+      {delete: '/projects/1'}.should route_to(controller: 'projects', action: 'destroy', id: '1')
+    end    
   end
 
   describe '#index' do
@@ -32,19 +36,12 @@ describe ProjectsController do
 	  Project.create(name: 'The Alan Parsons Project', owner: friendly_user)
 	  Project.create(name: 'Projecting Fear', owner: friendly_user)
 	  Project.create(name: 'Astral Projection', owner: friendly_user)
-	  Project.create(name: 'A project', owner: friendly_user)
-	  Project.create(name: 'A finished project', finished: true, owner: friendly_user)
     end
 
-    it 'presents all the unfinished Projects' do
+    it 'presents all the Projects' do
       get :index
-      assigns(:projects).map { |project| project.name }.should == [
-      	'The Alan Parsons Project',
-      	'Projecting Fear',
-      	'Astral Projection',
-      	'A project'
-      ]
-      assigns(:projects).each { |project| project.should be_a(ProjectPresenter) }
+      assigns(:projects).map(&:name).should == Project.all.map(&:name)
+      assigns(:projects).each{ |project| project.should be_a(ProjectPresenter) }
     end
   end
 
@@ -59,9 +56,10 @@ describe ProjectsController do
 
   describe 'edit' do
     context 'when the project belongs to the logged in user' do
-      it 'assigns the Project' do
+      it 'assigns the project and owner' do
         get :edit, id: Project.create(owner: fake_logged_in_user).to_param
-        assigns(:project).should be_a(ProjectPresenter)
+        assigns(:project).should be_a(Project)
+        assigns(:owner).should be_a(UserPresenter)
       end
     end
     
@@ -129,6 +127,36 @@ describe ProjectsController do
       	put :update, id: Project.create(owner: loner).to_param, project: {name: 'new'}
       
         response.status.should == 403
+      end
+	end
+  end  
+  
+  describe 'destroy' do
+    context 'when the project belongs to the logged in user' do
+	  let!(:project) { Project.create(owner: fake_logged_in_user) }
+	  
+      it 'deletes the project' do
+        expect do
+          delete :destroy, id: project.to_param
+        end.to change(Project, :count).by(-1)
+	end
+
+      it 'redirects to /' do
+        delete :destroy, id: project.to_param
+        
+        response.should redirect_to('/projects')
+      end
+    end
+    
+    context 'when the project does not belong to the logged in user' do
+      it 'forbids the request' do
+        fake_logged_in_user.should_not == loner
+        project = Project.create(owner: loner)
+      
+      	delete :destroy, id: project.to_param
+      
+        response.status.should == 403
+        project.reload.should be_present
       end
 	end
   end

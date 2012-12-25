@@ -10,7 +10,7 @@
       %tr
         %td
           %img{src: "#{project.owner.profile_image_url}"}
-          .display-name= project.owner.display_name
+          %span.display-name= project.owner.display_name
         %td
           .project_name= project.name
         %td
@@ -18,8 +18,14 @@
         %td
           .technology= project.technology
         %td
-          = link_to("Edit", edit_project_path(project))
-
+          - if project.current_user_interested
+            %span.recant-interest= link_to image_tag('thumbs-up.png'), interest_path(project_id: project.id), method: :delete
+          - else
+            %span.declare-interest= link_to image_tag('thumbs-up-grey.png'), interests_path(project_id: project.id), method: :post
+          - if project.current_user_owns
+            %span.edit-project= link_to image_tag('edit.png'), edit_project_path(project.id)
+            %span.torch-project= link_to image_tag('fire.png'), "/projects/#{project.id}", method: :delete
+		    
 %a{href: 'projects/new', class: 'btn'}
   %i{class: 'icon-plus'}
   = " Add project"

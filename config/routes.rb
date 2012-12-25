@@ -7,12 +7,12 @@ end
 PairExchange::Application.routes.draw do
   root to: 'projects#index'
 
-  resources :projects, except: :destroy
+  resources :projects
   
-  resources :interests, only: [:create]
-  delete '/interest', {
+  resources :interests, only: :create
+  delete '/interests', {
   	to: 'interests#destroy',
-  	as: :destroy_interest
+  	as: :interest
   }
 
   get '/sessions/google_auth_callback', { 

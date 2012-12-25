@@ -33,12 +33,12 @@ describe 'Google API Integration', js: true do
 	
 	describe "display names of owners next to projects" do
 		context "when the owner doesn't have a G+ account (hence no display name)" do
-			it "displays the default" do
+			it "displays their email address" do
 				Project.create(name: 'The Projective Hierarchy', owner: friendly_user)
 	
 				login_test_user
 		
-				page.all('tr')[1].find('.display-name').text.should == "Jonathan Dough"
+				page.all('tr')[1].find('.display-name').text.should == "pear.programming@gmail.com"
 			end
 		end
 		
