@@ -1,6 +1,6 @@
 class ProjectPresenter
 	attr_reader :id, :name, :description, :office, :technology, :owner,
-				:current_user_owns, :current_user_interested
+				:current_user_owns, :current_user_interested, :interested_users
 
 	def initialize(project, current_user = nil)
 		@id = project.id
@@ -9,6 +9,13 @@ class ProjectPresenter
 		@office = project.office
 		@technology = project.technology
 		@owner = UserPresenter.new(project.owner) if project.owner.present?
+		if project.interested_users.present?
+			@interested_users = project.interested_users.map do |user|
+				UserPresenter.new(user).display_name
+			end
+		else
+			@interested_users = ["no one yet"]
+		end
 		
 		if current_user.present?
 			@current_user_owns = project.owner == current_user

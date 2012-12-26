@@ -33,7 +33,29 @@ describe ProjectPresenter do
 		end
 	end
 	
-	describe "ownership and interests" do
+	describe "interested users" do
+		let(:project) { Project.new }
+
+		context "when a project has interested users" do
+			before do
+				calvin = User.new(display_name: "Mega Tron", email: "new_champ@lions.com")
+				dez = User.new(email: "number88@cowboys.com")
+				project.interested_users = [calvin, dez]
+			end
+			
+			it "includes a list of interested users' Google display names, or emails if they don't have Google names" do
+				ProjectPresenter.new(project).interested_users.should =~ ["Mega Tron", "number88@cowboys.com"]
+			end
+		end
+		
+		context "when a project has no interested users" do
+			it "says 'no one yet'" do
+				ProjectPresenter.new(project).interested_users.should == ["no one yet"]
+			end
+		end
+	end
+	
+	describe "relationship with a given 'current user'" do
 		let!(:project) { Project.new(owner: friendly_user) }
 
 		context "when a current user is given" do			

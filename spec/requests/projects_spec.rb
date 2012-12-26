@@ -1,15 +1,13 @@
 require 'spec_helper'
 
 describe 'Projects', js: true do
-  before do
-    Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
-    Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?', office: 'SF')
-    
- 	login_test_user
-  end
-
   describe 'listing the projects' do
     it 'shows the names, descriptions, owners, office, and technologies of active projects on the home page' do
+      Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
+      Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?', office: 'SF')
+    
+   	  login_test_user
+   	  
       page.should have_content('My Lovely Project')
       page.should have_content('pear.programming@gmail.com')
       page.should have_content('fun')
@@ -23,6 +21,8 @@ describe 'Projects', js: true do
 
   describe 'adding a project' do
     it 'allows you to add a project' do
+      login_test_user
+    
       page.should_not have_content('My 8th Grade Science Diorama')
       page.should_not have_content('Jay Pivot')
   
@@ -45,6 +45,8 @@ describe 'Projects', js: true do
   describe 'editing a project' do
     context 'when the current user owns the project' do
       before do
+        login_test_user
+        
         click_on "Add project"
         fill_in 'Project Name', with: 'New project, about to be edited'
         click_on 'Create Project'
@@ -64,6 +66,12 @@ describe 'Projects', js: true do
     end
     
     context 'when the current user does not own the project' do
+      before do
+        Project.create(name: "someone else's project", owner: loner)
+    
+   	    login_test_user
+      end
+      
       it "doesn't allow the user to edit" do
       	all('.edit-project').count.should == 0
       end
@@ -73,6 +81,8 @@ describe 'Projects', js: true do
   describe 'destroying a project' do
     context 'when the current user owns the project' do
       before do
+        login_test_user
+        
         click_on "Add project"
         fill_in 'Project Name', with: 'New project, about to be deleted'
         click_on 'Create Project'
@@ -91,6 +101,12 @@ describe 'Projects', js: true do
     end
     
     context 'when the current user does not own the project' do
+      before do
+        Project.create(name: "someone else's project", owner: loner)
+    
+   	    login_test_user
+      end
+
       it "doesn't allow the user to edit" do
       	all('.torch-project').count.should == 0
       end

@@ -1,4 +1,4 @@
-%table.table
+%table.table.table-striped
   %thead
     %tr
       %th.owner-heading Owner
@@ -6,11 +6,12 @@
       %th.description-heading Description
       %th.technology-heading Technology
       %th.office-heading Office
-      %th.actions-heading 
+      %th.actions-heading
+  %tbody
     - @projects.each do |project|
       %tr
         %td
-          %img{src: "#{project.owner.profile_image_url}"}
+          =image_tag "#{project.owner.profile_image_url}"
           %span.display-name= project.owner.display_name
         %td
           .project-name= project.name
@@ -28,7 +29,11 @@
           - if project.current_user_owns
             %span.edit-project= link_to image_tag('edit.png'), edit_project_path(project.id)
             %span.torch-project= link_to image_tag('fire.png'), "/projects/#{project.id}", method: :delete
-		    
+      %tr
+        %td{colspan: 6}
+          =image_tag "thumbs-up-small.png"
+          %span.interested-users= "#{project.interested_users.join(', ')}"
+
 %a{href: 'projects/new', class: 'btn'}
   %i{class: 'icon-plus'}
   = " Add project"

@@ -1,5 +1,6 @@
 table { table-layout: fixed; }
 table th, table td { overflow: hidden; }
+
 .owner-heading { width: 22.5%; }
 .project-name-heading { width: 17.5%; }
 .description-heading { width: 22.5%; } 
