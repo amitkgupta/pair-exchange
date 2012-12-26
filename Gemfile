@@ -32,7 +32,6 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'smooth-jazz-nyan-cat-formatter'
   gem 'sqlite3'
   gem 'factory_girl'
 end
