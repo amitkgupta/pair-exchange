@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'Projects', js: true do
   describe 'listing the projects' do
-    it 'shows the names, descriptions, owners, office, and technologies of active projects on the home page' do
+    it 'shows the names, descriptions, owners, office, and other technologies of active projects on the home page' do
       Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
-      Project.create(name: 'My Lonely Project', owner: loner, technology: 'wot is it?', office: 'SF')
+      Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', office: 'SF')
     
    	  login_test_user
    	  
@@ -32,7 +32,7 @@ describe 'Projects', js: true do
         fill_in 'Project Name', with: 'My 8th Grade Science Diorama'
         page.should_not have_content('Owned By')
         select 'SF', from: 'Office'
-        fill_in 'Technology', with: 'Cardboard'
+        fill_in 'Other technologies', with: 'Cardboard'
         click_on 'Create Project'
       end
       

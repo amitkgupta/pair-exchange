@@ -86,13 +86,13 @@ describe ProjectsController do
         post :create, project:
           { name: 'asdf',
             office: 'SF',
-            technology: 'Cardboard'
+            other_technologies: 'Cardboard'
           }
       end.to change(Project, :count).by(1)
       Project.last.name.should == 'asdf'
       Project.last.owner.should == fake_logged_in_user
       Project.last.office.should == 'SF'
-      Project.last.technology.should == 'Cardboard'
+      Project.last.other_technologies.should == 'Cardboard'
     end
 
     it 'redirects to /' do

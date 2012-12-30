@@ -11,14 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121225041648) do
+ActiveRecord::Schema.define(:version => 20121230203342) do
 
   create_table "projects", :force => true do |t|
     t.string  "name"
     t.text    "description"
     t.string  "office"
-    t.string  "technology"
-    t.boolean "finished",    :default => false
+    t.string  "other_technologies"
+    t.boolean "finished",           :default => false
     t.integer "user_id"
   end
 

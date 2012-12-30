@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe ProjectPresenter do
-	it "includes id name, description, office, technology" do
+	it "includes id name, description, office, other technologies" do
 		project = Project.new(
 			name: 'foo',
 			description: 'a fun project',
 			office: 'SF',
-			technology: 'rails',
+			other_technologies: 'rails',
 		)
 		
 		presented_project = described_class.new(project)
@@ -15,7 +15,7 @@ describe ProjectPresenter do
 		presented_project.name.should == 'foo'
 		presented_project.description.should == 'a fun project'
 		presented_project.office.should == 'SF'
-		presented_project.technology.should == 'rails'
+		presented_project.other_technologies.should == 'rails'
 	end
 	
 	describe "presented owner" do
