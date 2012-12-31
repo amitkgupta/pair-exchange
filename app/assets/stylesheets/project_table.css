@@ -1,9 +1,11 @@
 table { table-layout: fixed; }
 table th, table td { overflow: hidden; }
+table td { font-size: 12px; }
 
-.owner-heading { width: 22.5%; }
-.project-name-heading { width: 17.5%; }
-.description-heading { width: 22.5%; } 
-.other-technologies-heading { width: 17.5%; }
-.office-heading { width: 7.5%; }
-.actions-heading { width: 12.5%; }
+.owner-heading { width: 18.75%; }
+.project-name-heading { width: 13.75%; }
+.description-heading { width: 20%; } 
+.technologies-heading { width: 20%; }
+.other-technologies-heading { width: 15%; }
+.office-heading { width: 5%; }
+.actions-heading { width: 8.75%; }

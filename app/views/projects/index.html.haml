@@ -4,6 +4,7 @@
       %th.owner-heading Owner
       %th.project-name-heading Project Name
       %th.description-heading Description
+      %th.technologies-heading Technologies
       %th.other-technologies-heading Other Technologies
       %th.office-heading Office
       %th.actions-heading
@@ -18,6 +19,14 @@
         %td
           .description= project.description
         %td
+          %span=image_tag project.rails ? "rails-icon.png" : "rails-icon-grey.png"
+          %span=image_tag project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png"
+          %span=image_tag project.android ? "android-icon.png" : "android-icon-grey.png"
+          %span=image_tag project.ios ? "apple-icon.png" : "apple-icon-grey.png"
+          %span=image_tag project.scala ? "scala-icon.png" : "scala-icon-grey.png"
+          %span=image_tag project.python ? "python-icon.png" : "python-icon-grey.png"
+          %span=image_tag project.java ? "java-icon.png" : "java-icon-grey.png"
+        %td
           .other_technologies= project.other_technologies
         %td
           .office= project.office          
@@ -30,7 +39,7 @@
             %span.edit-project= link_to image_tag('edit.png'), edit_project_path(project.id)
             %span.torch-project= link_to image_tag('fire.png'), "/projects/#{project.id}", method: :delete
       %tr
-        %td{colspan: 6}
+        %td{colspan: 7}
           =image_tag "thumbs-up-small.png"
           %span.interested-users= "#{project.interested_users.join(', ')}"
 

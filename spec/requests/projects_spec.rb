@@ -2,20 +2,47 @@ require 'spec_helper'
 
 describe 'Projects', js: true do
   describe 'listing the projects' do
-    it 'shows the names, descriptions, owners, office, and other technologies of active projects on the home page' do
-      Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun')
-      Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', office: 'SF')
+    before do
+      Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun', scala: true)
+      Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', office: 'SF', ios: true)
     
    	  login_test_user
-   	  
-      page.should have_content('My Lovely Project')
-      page.should have_content('pear.programming@gmail.com')
-      page.should have_content('fun')
+    end
+    
+    it 'shows the names, descriptions, owners, office, and other technologies of all projects' do
+   	  lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
+   	  lovely_project_row.should be_present
+   	  lovely_project_row.should have_content('pear.programming@gmail.com')
+      lovely_project_row.should have_content('fun')
     	
-      page.should have_content('My Lonely Project')
-      page.should have_content('o.solo.mioooo@gmail.com')
-      page.should have_content('wot is it?')
-      page.should have_content('SF')
+      lonely_project_row = page.all('tr').find { |row| row.has_content? 'My Lonely Project' }
+      lonely_project_row.should be_present
+      lonely_project_row.should have_content('o.solo.mioooo@gmail.com')
+      lonely_project_row.should have_content('wot is it?')
+      lonely_project_row.should have_content('SF')
+    end
+    
+    it 'shows the appropriate technology icons' do      
+      page.should have_xpath("//img[@src=\"/assets/android-icon-grey.png\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/android-icon.png\"]")      
+
+      page.should have_xpath("//img[@src=\"/assets/rails-icon-grey.png\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/rails-icon.png\"]")      
+
+      page.should have_xpath("//img[@src=\"/assets/javascript-icon-grey.png\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/javascript-icon.png\"]")      
+
+      page.should have_xpath("//img[@src=\"/assets/python-icon-grey.png\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/python-icon.png\"]")      
+
+      page.should have_xpath("//img[@src=\"/assets/java-icon-grey.png\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/java-icon.png\"]")      
+
+      page.should have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]", count: 1)
+      page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]", count: 1)      
+
+      page.should have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]", count: 1)
+      page.should have_xpath("//img[@src=\"/assets/apple-icon.png\"]", count: 1)      
     end
   end
 
@@ -40,6 +67,8 @@ describe 'Projects', js: true do
       current_path.should == projects_path    
       page.should have_content('My 8th Grade Science Diorama')
       page.should have_content('Jay Pivot')
+      page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
+      page.should_not have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")
     end
   end
   
@@ -52,6 +81,8 @@ describe 'Projects', js: true do
         fill_in 'Project Name', with: 'New project, about to be edited'
 		page.find('#scala-checkbox-container').click
         click_on 'Create Project'
+        page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
+        page.should_not have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")
       end
       
       it 'allows the user to edit it' do
@@ -65,6 +96,8 @@ describe 'Projects', js: true do
         current_path.should == projects_path
         page.should have_content('Just got edited')
         page.should_not have_content('New Project, about to be edited')
+        page.should_not have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
+        page.should have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")        
       end
     end
     
