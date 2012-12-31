@@ -14,7 +14,7 @@ describe GoogleApiInterface do
 			authorization_uri.path.should == "/o/oauth2/auth"
 			authorization_uri.query_values.should == {
 				"access_type" => "offline",
-				"approval_prompt" => "force",
+				"approval_prompt" => "auto",
 				"client_id" => "1030260537524.apps.googleusercontent.com",
 				"redirect_uri" => "http://localhost:3000/sessions/google_auth_callback",
 				"response_type" => "code",

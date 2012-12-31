@@ -8,21 +8,26 @@ end
 
 def login_test_user
 	visit root_path
-	sign_in unless already_signed_in?
-	sleep 1.5 and click_on "Allow access" if page.has_content? "Allow access"
+	sign_in if sign_in_necessary?
+	allow_access if allow_access_necessary?
 end
 
 def sign_in
 	fill_in "Email", with: "testing.pair.exchange@gmail.com"
 	fill_in "Password", with: "john50buttons"	
-	find("#PersistentCookie").set(false)
 	click_on "Sign in"
 end
 
-def already_signed_in?
-	page.has_content?('pair-exchange is requesting permission to:') &&
-		page.has_content?('Allow access') &&
-		page.has_content?('Jay Pivot')
+def sign_in_necessary?
+	page.has_content? "Sign in"
+end
+
+def allow_access
+	sleep 1 and click_on "Allow access"
+end
+
+def allow_access_necessary?
+	page.has_content? "Allow access"
 end
 
 def friendly_user

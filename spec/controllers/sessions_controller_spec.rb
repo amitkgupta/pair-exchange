@@ -23,10 +23,10 @@ describe SessionsController do
     		session.should be_blank
     	end
     	
-    	it "should redirect to root path" do
+    	it "should redirect to Google logout" do
     		subject
     		
-    		response.should redirect_to(root_path)
+    		response.should redirect_to("https://accounts.google.com/logout")
     	end
     end
     	

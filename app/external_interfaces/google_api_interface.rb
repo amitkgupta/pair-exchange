@@ -17,7 +17,7 @@ class GoogleApiInterface
 	end
 	
 	def authorization_uri
-		@client.authorization.authorization_uri
+		@client.authorization.authorization_uri(approval_prompt: :auto)
 	end
 	
 	def authorize_from_code(code)
