@@ -1,15 +1,43 @@
 = form_for(@project) do |f|
-  = f.label(:name)
-  = f.text_field(:name)
+  = f.label :name
+  = f.text_field :name
   - if @project.owner.present?
     %p Owned By
     =image_tag "#{@owner.profile_image_url}"
     %span.display-name= @owner.display_name
-  = f.label(:office)
-  = f.select(:office, ['SF', 'NY', 'other'])
-  = f.label(:other_technologies)
-  = f.text_field(:other_technologies)
-  = f.label(:description)
-  = f.text_area(:description)
+  = f.label :office
+  = f.select :office, ['SF', 'NY', 'other']
+  #rails-checkbox-container.checkbox-container
+    .used-technology=image_tag "rails-icon.png"
+    .unused-technology=image_tag "rails-icon-grey.png"
+    = f.check_box :rails, style: 'visibility: hidden'
+  #javascript-checkbox-container.checkbox-container
+    .used-technology=image_tag "javascript-icon.png"
+    .unused-technology=image_tag "javascript-icon-grey.png"
+    = f.check_box :javascript, style: 'visibility: hidden'
+  #ios-checkbox-container.checkbox-container
+    .used-technology=image_tag "apple-icon.png"
+    .unused-technology=image_tag "apple-icon-grey.png"
+    = f.check_box :ios, style: 'visibility: hidden'
+  #android-checkbox-container.checkbox-container
+    .used-technology=image_tag "android-icon.png"
+    .unused-technology=image_tag "android-icon-grey.png"
+    = f.check_box :android, style: 'visibility: hidden'
+  #scala-checkbox-container.checkbox-container
+    .used-technology=image_tag "scala-icon.png"
+    .unused-technology=image_tag "scala-icon-grey.png"
+    = f.check_box :scala, style: 'visibility: hidden'
+  #python-checkbox-container.checkbox-container
+    .used-technology=image_tag "python-icon.png"
+    .unused-technology=image_tag "python-icon-grey.png"
+    = f.check_box :python, style: 'visibility: hidden'
+  #java-checkbox-container.checkbox-container
+    .used-technology=image_tag "java-icon.png"
+    .unused-technology=image_tag "java-icon-grey.png"
+    = f.check_box :java, style: 'visibility: hidden'
+  = f.label :other_technologies
+  = f.text_field :other_technologies
+  = f.label :description
+  = f.text_area :description
   = f.submit
 

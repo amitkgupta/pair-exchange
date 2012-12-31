@@ -1,12 +1,19 @@
 require 'spec_helper'
 
 describe ProjectPresenter do
-	it "includes id name, description, office, other technologies" do
+	it "includes id name, description, office, technologies, and other technologies" do
 		project = Project.new(
 			name: 'foo',
 			description: 'a fun project',
 			office: 'SF',
-			other_technologies: 'rails',
+			other_technologies: 'cardboard',
+			rails: true,
+			javascript: true,
+			android: false,
+			ios: false,
+			java: false,
+			python: false,
+			scala: false
 		)
 		
 		presented_project = described_class.new(project)
@@ -15,7 +22,14 @@ describe ProjectPresenter do
 		presented_project.name.should == 'foo'
 		presented_project.description.should == 'a fun project'
 		presented_project.office.should == 'SF'
-		presented_project.other_technologies.should == 'rails'
+		presented_project.other_technologies.should == 'cardboard'
+		presented_project.rails.should == true
+		presented_project.javascript.should == true
+		presented_project.android.should == false
+		presented_project.ios.should == false
+		presented_project.java.should == false
+		presented_project.python.should == false
+		presented_project.scala.should == false		
 	end
 	
 	describe "presented owner" do

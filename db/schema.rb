@@ -11,15 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121230203342) do
+ActiveRecord::Schema.define(:version => 20121230211852) do
 
   create_table "projects", :force => true do |t|
     t.string  "name"
     t.text    "description"
     t.string  "office"
     t.string  "other_technologies"
-    t.boolean "finished",           :default => false
     t.integer "user_id"
+    t.boolean "rails"
+    t.boolean "ios"
+    t.boolean "android"
+    t.boolean "python"
+    t.boolean "scala"
+    t.boolean "javascript"
+    t.boolean "java"
   end
 
   create_table "projects_users", :id => false, :force => true do |t|

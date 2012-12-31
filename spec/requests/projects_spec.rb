@@ -33,6 +33,7 @@ describe 'Projects', js: true do
         page.should_not have_content('Owned By')
         select 'SF', from: 'Office'
         fill_in 'Other technologies', with: 'Cardboard'
+		page.find('#scala-checkbox-container').click
         click_on 'Create Project'
       end
       
@@ -49,6 +50,7 @@ describe 'Projects', js: true do
         
         click_on "Add project"
         fill_in 'Project Name', with: 'New project, about to be edited'
+		page.find('#scala-checkbox-container').click
         click_on 'Create Project'
       end
       
@@ -57,6 +59,7 @@ describe 'Projects', js: true do
         page.find('.edit-project a').click
 		        
         fill_in 'Project Name', with: 'Just got edited'
+		page.find('#scala-checkbox-container').click
         click_on 'Update Project'
         
         current_path.should == projects_path
