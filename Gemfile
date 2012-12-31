@@ -35,3 +35,7 @@ group :test, :development do
   gem 'sqlite3'
   gem 'factory_girl'
 end
+
+group :development do
+  gem 'bullet'
+end

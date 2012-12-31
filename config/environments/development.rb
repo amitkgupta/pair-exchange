@@ -34,6 +34,13 @@ PairExchange::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  
+  # Bullet catches N+1 queries, as well as unused eager loads
+  # set the switches below to 'true' to see alerts
+  config.after_initialize do
+    Bullet.enable = false
+  	Bullet.alert = false
+  end
 end
 
 HOST = "http://localhost:3000/"
