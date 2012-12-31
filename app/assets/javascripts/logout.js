@@ -1,0 +1,1 @@
+$('iframe').load(function() { window.location = "/"; });

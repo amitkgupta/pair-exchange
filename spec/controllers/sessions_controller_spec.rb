@@ -22,12 +22,6 @@ describe SessionsController do
     		
     		session.should be_blank
     	end
-    	
-    	it "should redirect to Google logout" do
-    		subject
-    		
-    		response.should redirect_to("https://accounts.google.com/logout")
-    	end
     end
     	
   	describe "#google_auth_callback" do
