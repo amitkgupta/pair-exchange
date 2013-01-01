@@ -26,6 +26,9 @@ describe User do
 			User.new(google_id: "1").should have(1).error_on(:google_id)
 		end
 	end
+	
+	it { should have_and_belong_to_many(:interests) }
+	it { should have_many(:projects) }
 
 	describe "setting the user's google id, display name, email, and image url" do
 		subject do

@@ -25,4 +25,7 @@ describe Project do
 			subject.should have(1).error_on(:owner)
 		end
 	end
+	
+	it { should belong_to(:owner) }
+	it { should have_and_belong_to_many(:interested_users) }
 end
