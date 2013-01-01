@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'webmock/rspec'
 require 'helpers'
+require 'capybara/poltergeist'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -12,6 +13,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 # Fix Capybara server port to match callback URL registered with Google API
 Capybara.server_port = 8378
+
+Capybara.javascript_driver = :poltergeist
 
 # Monkey patch active record so that specs and Selenium driver use the same
 # connection to the database, allowing Selenium tests to run transactionally

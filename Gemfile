@@ -33,6 +33,7 @@ group :test, :development do
   gem 'sqlite3'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'poltergeist'
 end
 
 group :development do

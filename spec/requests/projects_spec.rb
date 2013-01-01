@@ -126,7 +126,7 @@ describe 'Projects', js: true do
         page.find('.torch-project').click
         
         current_path.should == root_path
-        wait_until { !page.has_no_content? 'New project, about to be deleted' }
+        wait_until { page.has_no_content? 'New project, about to be deleted' }
       end
     end
     
