@@ -143,7 +143,7 @@ describe 'Projects', js: true do
    	    login_test_user
       end
 
-      it "doesn't allow the user to edit" do
+      it "doesn't allow the user to delete" do
       	all('.torch-project').count.should == 0
       end
     end

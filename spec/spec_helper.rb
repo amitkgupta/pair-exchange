@@ -13,8 +13,18 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 # Fix Capybara server port to match callback URL registered with Google API
 Capybara.server_port = 8378
 
-# Wipe the test DB initially
-DatabaseCleaner.clean_with :truncation
+# Monkey patch active record so that specs and Selenium driver use the same
+# connection to the database, allowing Selenium tests to run transactionally
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  @@shared_connection = nil
+
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end
+ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
+
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -24,7 +34,7 @@ RSpec.configure do |config|
   # Selenium driver is being used, since Selenium doesn't work with transactional
   # fixtures.  Setting this to false so DatabaseCleaner can handle strategy on a per-test
   # basis. 
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
