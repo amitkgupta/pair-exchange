@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 	skip_before_filter :require_current_user
 	
 	def google_auth_callback
-		unless current_user.present?
+		unless current_user.present? && params[:code].present?
 			begin
 				google_api_interface.authorize_from_code(params[:code])
 				session[:google_id] = google_api_interface.current_user_google_id

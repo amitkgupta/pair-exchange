@@ -6,7 +6,7 @@ describe SessionsController do
     		get :logout
     	end
     
-    	it "should route" do
+    	specify do
     		{ get: 'logout' }.should route_to(
     			controller: 'sessions',
     			action: 'logout'
@@ -29,15 +29,18 @@ describe SessionsController do
   			get :google_auth_callback, code: "code"
   		end
   		
-		describe "routing from sessions/google_auth_callback" do
-			it "should route successfully when a code is given in the query string" do
-				pending "There is a known issue with RSpec testing routes with constraints"
-			end
-			
-			it "should not route when there is no code" do
-				pending "There is a known issue with RSpec testing routes with constraints"
-			end
+		specify do
+			{ get: 'google_auth_callback?code=code' }.should route_to({
+				controller: 'sessions',
+				action: 'google_auth_callback'
+			})
 		end  			
+    	
+    	context "when no code is provided" do
+    		it "should not modify the session" do
+    			expect { get :google_auth_callback }.to_not change { session }
+    		end
+    	end	
     	
     	describe "redirecting" do
     		before do

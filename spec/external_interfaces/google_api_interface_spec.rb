@@ -16,7 +16,7 @@ describe GoogleApiInterface do
 				"access_type" => "offline",
 				"approval_prompt" => "auto",
 				"client_id" => "1030260537524.apps.googleusercontent.com",
-				"redirect_uri" => "http://localhost:3000/sessions/google_auth_callback",
+				"redirect_uri" => "http://localhost:3000/google_auth_callback",
 				"response_type" => "code",
 				"scope" =>  "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
 			}
