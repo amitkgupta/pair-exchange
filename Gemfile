@@ -24,16 +24,14 @@ group :production do
 end
 
 group :test do
-  gem "shoulda-matchers"
   gem 'rake'
   gem 'webmock'
   gem 'capybara'
 end
 
 group :test, :development do
-  gem 'rspec-rails'
   gem 'sqlite3'
-  gem 'factory_girl'
+  gem 'rspec-rails'
 end
 
 group :development do

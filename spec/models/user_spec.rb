@@ -1,8 +1,32 @@
 require 'spec_helper'
 
 describe User do
-	pending "write tests for associations, validations, mass assignment"
+	describe "accessible attributes" do
+		specify do
+			described_class.accessible_attributes.to_a.reject{ |attr| attr.blank? }.should =~ [
+				"email",
+				"google_id", 
+				"profile_image_url",
+				"display_name"
+			]
+		end
+	end
 	
+	describe "validations" do
+		it "should validate presence of an email" do
+			subject.should have(1).error_on(:email)
+		end
+
+		it "should validate presence of a google id" do
+			subject.should have(1).error_on(:google_id)
+		end
+		
+		it "should validate uniqueness of google id" do
+			User.create(google_id: "1", email: "a@a.a")
+			User.new(google_id: "1").should have(1).error_on(:google_id)
+		end
+	end
+
 	describe "setting the user's google id, display name, email, and image url" do
 		subject do
 			described_class.create_or_update_from_google_data(google_api_interface)
