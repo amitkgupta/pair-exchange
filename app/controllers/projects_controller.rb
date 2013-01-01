@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
     project = Project.new(params[:project])
     project.owner = current_user
     project.save!
-    redirect_to(projects_path)
+    redirect_to root_path
   end
 
   def edit
@@ -28,14 +28,14 @@ class ProjectsController < ApplicationController
   def update
     ensure_access do |project|
       project.update_attributes(params[:project])
-      redirect_to(projects_path)
+      redirect_to root_path
     end
   end
   
   def destroy
     ensure_access do |project|
       project.destroy
-      redirect_to(projects_path)
+      redirect_to root_path
     end
   end
   

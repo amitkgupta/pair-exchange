@@ -6,6 +6,11 @@ def fake_logged_in_user
 	User.find_by_google_id(session[:google_id])
 end
 
+def test_user
+	User.find_by_email("testing.pair.exchange@gmail.com") ||
+		User.create(email: "testing.pair.exchange@gmail.com", google_id: '108496684470619075074')
+end
+
 def login_test_user
 	visit root_path
 	sign_in if sign_in_necessary?

@@ -36,7 +36,7 @@ describe InterestsController do
 
     it 'redirects to /' do
 	  subject
-      response.should redirect_to('/projects')
+      response.should redirect_to(root_path)
     end
   end
   
@@ -63,7 +63,7 @@ describe InterestsController do
 
     it 'redirects to /' do
 	  subject
-      response.should redirect_to('/projects')
+      response.should redirect_to(root_path)
     end
   end		
 end

@@ -64,7 +64,7 @@ describe 'Projects', js: true do
         click_on 'Create Project'
       end
       
-      current_path.should == projects_path    
+      current_path.should == root_path    
       page.should have_content('My 8th Grade Science Diorama')
       page.should have_content('Jay Pivot')
       page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
@@ -75,25 +75,22 @@ describe 'Projects', js: true do
   describe 'editing a project' do
     context 'when the current user owns the project' do
       before do
-        login_test_user
+        Project.create(owner: test_user, name: "New project, about to be edited", scala: true)
         
-        click_on "Add project"
-        fill_in 'Project Name', with: 'New project, about to be edited'
-		page.find('#scala-checkbox-container').click
-        click_on 'Create Project'
-        page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
-        page.should_not have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")
+        login_test_user
       end
       
       it 'allows the user to edit it' do
+        page.should have_content('New project, about to be edited')
         page.all('.edit-project').count.should == 1
+        
         page.find('.edit-project a').click
 		        
         fill_in 'Project Name', with: 'Just got edited'
 		page.find('#scala-checkbox-container').click
         click_on 'Update Project'
         
-        current_path.should == projects_path
+        current_path.should == root_path
         page.should have_content('Just got edited')
         page.should_not have_content('New Project, about to be edited')
         page.should_not have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
@@ -117,21 +114,18 @@ describe 'Projects', js: true do
   describe 'destroying a project' do
     context 'when the current user owns the project' do
       before do
+        Project.create(owner: test_user, name: "New project, about to be deleted")
+
         login_test_user
-        
-        click_on "Add project"
-        fill_in 'Project Name', with: 'New project, about to be deleted'
-        click_on 'Create Project'
-        
-        current_path.should == projects_path
-        page.should have_content 'New project, about to be deleted'
       end
       
       it 'allows the user to delete it' do
+        page.should have_content 'New project, about to be deleted'
         page.all('.torch-project').count.should == 1
+        
         page.find('.torch-project').click
         
-        current_path.should == projects_path
+        current_path.should == root_path
         wait_until { !page.has_no_content? 'New project, about to be deleted' }
       end
     end

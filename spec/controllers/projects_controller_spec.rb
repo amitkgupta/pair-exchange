@@ -97,7 +97,7 @@ describe ProjectsController do
 
     it 'redirects to /' do
       post :create, project: {name: 'asdf'}
-      response.should redirect_to('/projects')
+      response.should redirect_to(root_path)
     end
   end
 
@@ -116,7 +116,7 @@ describe ProjectsController do
       it 'redirects to /' do
         put :update, id: project.to_param, project: {name: 'new name'}
 
-        response.should redirect_to('/projects')
+        response.should redirect_to(root_path)
       end
     end
     
@@ -144,7 +144,7 @@ describe ProjectsController do
       it 'redirects to /' do
         delete :destroy, id: project.to_param
         
-        response.should redirect_to('/projects')
+        response.should redirect_to(root_path)
       end
     end
     
