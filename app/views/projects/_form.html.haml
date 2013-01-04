@@ -37,7 +37,7 @@
     = f.check_box :java, style: 'visibility: hidden'
   = f.label :other_technologies
   = f.text_field :other_technologies
-  = f.label :description
+  = f.label :description, "Description (#{link_to 'Markdown cheat sheet', 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code'})".html_safe
   = f.text_area :description
   = f.submit
 
