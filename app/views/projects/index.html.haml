@@ -10,7 +10,8 @@
       %th.actions-heading
   %tbody
     - @projects.each do |project|
-      = render partial: 'project', locals: { project: project }
+      %tr{ data: { "pjax-project-#{project.id}" => '' } }
+        = render partial: 'project', locals: { project: project }
       %tr
         %td{colspan: 7}
           =image_tag "thumbs-up-small.png"
