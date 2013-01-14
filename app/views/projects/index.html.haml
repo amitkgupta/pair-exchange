@@ -1,3 +1,22 @@
+- content_for :filters do
+  %ul.nav.secondary-nav.pull-right
+    %li#office-filter.dropdown(data-dropdown="dropdown")
+      %a.dropdown-toggle(data-toggle="dropdown" href="#")
+        By Office
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          %a{"href" => projects_path} All Offices
+        - Project::OFFICES.each do |office|
+          %li
+            %a{"href" => projects_path(office: office)}= office
+
+%h3
+  - if @office
+    = "Projects for #{@office} Office"
+  - else
+    Projects for All Offices
+
 %table.table.table-striped
   %thead
     %tr
