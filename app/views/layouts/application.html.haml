@@ -18,6 +18,7 @@
         .container-fluid
           %a.brand(href="#") PairExchange
           %a.pull-right.btn(href="/logout") Sign out
+          = yield(:filters) if content_for?(:filters)
     .container-fluid
 
       .row-fluid

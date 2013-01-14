@@ -40,8 +40,17 @@ describe ProjectsController do
 
     it 'presents all the Projects' do
       get :index
-      assigns(:projects).map(&:name).should == Project.all.map(&:name)
-      assigns(:projects).each{ |project| project.should be_a(ProjectPresenter) }
+      assigns(:projects).should == Project.all
+      assigns(:project_presenters).each{ |project| project.should be_a(ProjectPresenter) }
+      assigns(:office).should be_nil
+    end
+
+    context "with an office filter parameter" do
+      it "should only show projects for that office" do
+        get :index, office: "NY"
+        assigns(:projects).should == Project.where(office: "NY")
+        assigns(:office).should == "NY"
+      end
     end
   end
 
