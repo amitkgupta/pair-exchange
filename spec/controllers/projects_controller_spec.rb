@@ -40,8 +40,8 @@ describe ProjectsController do
 
     it 'presents all the Projects' do
       get :index
-      assigns(:projects).map(&:name).should == Project.all.map(&:name)
-      assigns(:projects).each{ |project| project.should be_a(ProjectPresenter) }
+      assigns(:projects).should == Project.all
+      assigns(:project_presenters).each{ |project| project.should be_a(ProjectPresenter) }
     end
   end
 

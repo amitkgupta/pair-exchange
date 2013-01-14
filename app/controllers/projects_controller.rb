@@ -2,7 +2,8 @@ require_relative '../presenters/project_presenter.rb'
 
 class ProjectsController < ApplicationController
   def index
-    @projects = Project.includes(:owner, :interested_users).all.map do |project|
+    @projects = Project.includes(:owner, :interested_users)
+    @project_presenters = @projects.all.map do |project|
       ProjectPresenter.new(project, current_user)
     end
   end
