@@ -10,9 +10,11 @@ describe 'Projects', js: true do
     end
     
     it 'shows the names, descriptions, owners, office, and other technologies of all projects' do
-   	  lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
-   	  lovely_project_row.should be_present
-   	  lovely_project_row.should have_content('pear.programming@gmail.com')
+      within("h3") { page.should have_content("Projects for All Offices") }
+
+      lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
+      lovely_project_row.should be_present
+      lovely_project_row.should have_content('pear.programming@gmail.com')
       lovely_project_row.should have_content('fun')
     	
       lonely_project_row = page.all('tr').find { |row| row.has_content? 'My Lonely Project' }
@@ -21,7 +23,22 @@ describe 'Projects', js: true do
       lonely_project_row.should have_content('wot is it?')
       lonely_project_row.should have_content('SF')
     end
-    
+
+    it "filters by office" do
+      within("#office-filter") do
+        click_on "By Office"
+        click_on "SF"
+      end
+
+      within("h3") { page.should have_content("Projects for SF Office") }
+
+      lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
+      lovely_project_row.should_not be_present
+
+      lonely_project_row = page.all('tr').find { |row| row.has_content? 'My Lonely Project' }
+      lonely_project_row.should be_present
+    end
+
     it 'shows the appropriate technology icons' do      
       page.should have_xpath("//img[@src=\"/assets/android-icon-grey.png\"][@title=\"Android\"]", count: 2)
       page.should_not have_xpath("//img[@src=\"/assets/android-icon.png\"]")
