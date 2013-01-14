@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+  OFFICES = ['SF', 'NY', 'other']
+
   attr_accessible :name, :owner, :description, :office, :other_technologies,
   					:rails, :ios, :android, :python, :java, :scala, :javascript
   

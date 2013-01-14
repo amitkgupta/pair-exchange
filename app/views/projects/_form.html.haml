@@ -6,7 +6,7 @@
     =image_tag "#{@owner.profile_image_url}"
     %span.display-name= @owner.display_name
   = f.label :office
-  = f.select :office, ['SF', 'NY', 'other']
+  = f.select :office, Project::OFFICES
   #rails-checkbox-container.checkbox-container
     .used-technology=image_tag "rails-icon.png", title: "Rails"
     .unused-technology=image_tag "rails-icon-grey.png", title: "Rails"
