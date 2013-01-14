@@ -9,7 +9,7 @@
       %th.office-heading Office
       %th.actions-heading
   %tbody
-    - @projects.each do |project|
+    - @project_presenters.each do |project|
       %tr{ data: { "pjax-project-#{project.id}" => '' } }
         = render partial: 'project', locals: { project: project }
       %tr
