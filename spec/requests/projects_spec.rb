@@ -23,8 +23,8 @@ describe 'Projects', js: true do
     end
     
     it 'shows the appropriate technology icons' do      
-      page.should have_xpath("//img[@src=\"/assets/android-icon-grey.png\"]", count: 2)
-      page.should_not have_xpath("//img[@src=\"/assets/android-icon.png\"]")      
+      page.should have_xpath("//img[@src=\"/assets/android-icon-grey.png\"][@title=\"Android\"]", count: 2)
+      page.should_not have_xpath("//img[@src=\"/assets/android-icon.png\"]")
 
       page.should have_xpath("//img[@src=\"/assets/rails-icon-grey.png\"]", count: 2)
       page.should_not have_xpath("//img[@src=\"/assets/rails-icon.png\"]")      

@@ -6,22 +6,22 @@
 %td
   .description= markdown project.description
 %td
-  %span=image_tag project.rails ? "rails-icon.png" : "rails-icon-grey.png"
-  %span=image_tag project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png"
-  %span=image_tag project.android ? "android-icon.png" : "android-icon-grey.png"
-  %span=image_tag project.ios ? "apple-icon.png" : "apple-icon-grey.png"
-  %span=image_tag project.scala ? "scala-icon.png" : "scala-icon-grey.png"
-  %span=image_tag project.python ? "python-icon.png" : "python-icon-grey.png"
-  %span=image_tag project.java ? "java-icon.png" : "java-icon-grey.png"
+  %span=image_tag(project.rails ? "rails-icon.png" : "rails-icon-grey.png", title: "Rails")
+  %span=image_tag(project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png", title: "Javascript")
+  %span=image_tag(project.android ? "android-icon.png" : "android-icon-grey.png", title: "Android")
+  %span=image_tag(project.ios ? "apple-icon.png" : "apple-icon-grey.png", title: "iOS")
+  %span=image_tag(project.scala ? "scala-icon.png" : "scala-icon-grey.png", title: "Scala")
+  %span=image_tag(project.python ? "python-icon.png" : "python-icon-grey.png", title: "Python")
+  %span=image_tag(project.java ? "java-icon.png" : "java-icon-grey.png", title: "Java")
 %td
   .other_technologies= project.other_technologies
 %td
   .office= project.office          
 %td
   - if project.current_user_interested
-    %span.recant-interest= link_to image_tag('thumbs-up.png'), interest_path(project_id: project.id), method: :delete
+    %span.recant-interest= link_to image_tag('thumbs-up.png', title: "Unlike"), interest_path(project_id: project.id), method: :delete
   - else
-    %span.declare-interest= link_to image_tag('thumbs-up-grey.png'), interests_path(project_id: project.id), method: :post
+    %span.declare-interest= link_to image_tag('thumbs-up-grey.png', title: "Like"), interests_path(project_id: project.id), method: :post
   - if project.current_user_owns
-    %span.edit-project= link_to image_tag('edit.png'), edit_project_path(project.id)
-    %span.torch-project= link_to image_tag('fire.png'), "/projects/#{project.id}", method: :delete
+    %span.edit-project= link_to image_tag('edit.png', title: "Edit"), edit_project_path(project.id)
+    %span.torch-project= link_to image_tag('fire.png', title: "Delete"), "/projects/#{project.id}", method: :delete

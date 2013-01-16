@@ -8,32 +8,32 @@
   = f.label :office
   = f.select :office, ['SF', 'NY', 'other']
   #rails-checkbox-container.checkbox-container
-    .used-technology=image_tag "rails-icon.png"
-    .unused-technology=image_tag "rails-icon-grey.png"
+    .used-technology=image_tag "rails-icon.png", title: "Rails"
+    .unused-technology=image_tag "rails-icon-grey.png", title: "Rails"
     = f.check_box :rails, style: 'visibility: hidden'
   #javascript-checkbox-container.checkbox-container
-    .used-technology=image_tag "javascript-icon.png"
-    .unused-technology=image_tag "javascript-icon-grey.png"
+    .used-technology=image_tag "javascript-icon.png", title: "Javascript"
+    .unused-technology=image_tag "javascript-icon-grey.png", title: "Javascript"
     = f.check_box :javascript, style: 'visibility: hidden'
   #ios-checkbox-container.checkbox-container
-    .used-technology=image_tag "apple-icon.png"
-    .unused-technology=image_tag "apple-icon-grey.png"
+    .used-technology=image_tag "apple-icon.png", title: "iOS"
+    .unused-technology=image_tag "apple-icon-grey.png", title: "iOS"
     = f.check_box :ios, style: 'visibility: hidden'
   #android-checkbox-container.checkbox-container
-    .used-technology=image_tag "android-icon.png"
-    .unused-technology=image_tag "android-icon-grey.png"
+    .used-technology=image_tag "android-icon.png", title: "Android"
+    .unused-technology=image_tag "android-icon-grey.png", title: "Android"
     = f.check_box :android, style: 'visibility: hidden'
   #scala-checkbox-container.checkbox-container
-    .used-technology=image_tag "scala-icon.png"
-    .unused-technology=image_tag "scala-icon-grey.png"
+    .used-technology=image_tag "scala-icon.png", title: "Scala"
+    .unused-technology=image_tag "scala-icon-grey.png", title: "Scala"
     = f.check_box :scala, style: 'visibility: hidden'
   #python-checkbox-container.checkbox-container
-    .used-technology=image_tag "python-icon.png"
-    .unused-technology=image_tag "python-icon-grey.png"
+    .used-technology=image_tag "python-icon.png", title: "Python"
+    .unused-technology=image_tag "python-icon-grey.png", title: "Python"
     = f.check_box :python, style: 'visibility: hidden'
   #java-checkbox-container.checkbox-container
-    .used-technology=image_tag "java-icon.png"
-    .unused-technology=image_tag "java-icon-grey.png"
+    .used-technology=image_tag "java-icon.png", title: "Java"
+    .unused-technology=image_tag "java-icon-grey.png", title: "Java"
     = f.check_box :java, style: 'visibility: hidden'
   = f.label :other_technologies
   = f.text_field :other_technologies
