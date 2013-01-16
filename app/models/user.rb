@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   	
   	has_and_belongs_to_many :interests, class_name: "Project"
   	
+  	def self.admin_emails; ADMIN_EMAILS; end
+  	
   	def self.create_or_update_from_google_data(google_api_interface)
   		google_id = google_api_interface.current_user_google_id
   		attributes = {
@@ -18,4 +20,9 @@ class User < ActiveRecord::Base
   		user = User.find_or_initialize_by_google_id(google_id)
   		user.update_attributes(attributes)
   	end
+
+	def is_admin
+		User.admin_emails.include? email
+	end
+	
 end

@@ -82,4 +82,17 @@ describe User do
 			end
 		end
 	end
+	
+	describe "#is_admin" do
+		it "should return false if the given user is not an admin" do
+			User.new(email: "notadmin@google.com").is_admin.should be_false
+		end
+		
+		it "should return true if the given user is an admin" do
+			User.new(email: "amitkgupta84@gmail.com").is_admin.should be_true
+			User.new(email: "agupta@pivotallabs.com").is_admin.should be_true
+			User.new(email: "cobyrne@pivotallabs.com").is_admin.should be_true
+			User.new(email: "ryan@pivotallabs.com").is_admin.should be_true
+		end
+	end
 end

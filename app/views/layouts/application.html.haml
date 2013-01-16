@@ -17,6 +17,8 @@
       .navbar-inner
         .container-fluid
           %a.brand(href="#") PairExchange
+          - if admin_logged_in?
+            .btn Admin
           %a.pull-right.btn(href="/logout") Sign out
     .container-fluid
 

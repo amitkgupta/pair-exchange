@@ -60,3 +60,5 @@ module PairExchange
     config.assets.version = '1.0'
   end
 end
+
+ADMIN_EMAILS = ["amitkgupta84@gmail.com", "agupta@pivotallabs.com", "ryan@pivotallabs.com", "cobyrne@pivotallabs.com"]

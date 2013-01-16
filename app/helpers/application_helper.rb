@@ -4,6 +4,10 @@ module ApplicationHelper
 	def current_user
 		User.find_by_google_id(session[:google_id])
 	end
+	
+	def admin_logged_in?
+		current_user && current_user.is_admin
+	end
 
 	def google_api_interface
 		@google_api_interface ||= GoogleApiInterface.new
