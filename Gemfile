@@ -28,6 +28,7 @@ group :test do
   gem 'rake'
   gem 'webmock'
   gem 'capybara'
+  gem 'fuubar'
 end
 
 group :test, :development do
