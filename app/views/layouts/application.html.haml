@@ -16,9 +16,9 @@
     .navbar.navbar-fluid-top
       .navbar-inner
         .container-fluid
-          %a.brand(href="#") PairExchange
+          %a.brand(href="/") PairExchange
           - if admin_logged_in?
-            .btn Admin
+            %a.btn(href="/admin") Admin
           %a.pull-right.btn(href="/logout") Sign out
           = yield(:filters) if content_for?(:filters)
     .container-fluid

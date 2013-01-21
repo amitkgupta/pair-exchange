@@ -18,5 +18,10 @@ PairExchange::Application.routes.draw do
     as: :logout
   }
   
+  get '/admin', {
+  	to: 'admin#calendar',
+  	as: :admin
+  }
+  
   get 'test_login', to: 'testing_login#login', as: :test_login if Rails.env.test?
 end
