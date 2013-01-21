@@ -10,7 +10,6 @@ gem 'twitter-bootstrap-rails'
 gem 'thin'
 gem 'google-api-client'
 gem 'redcarpet'
-gem 'rack-pjax'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

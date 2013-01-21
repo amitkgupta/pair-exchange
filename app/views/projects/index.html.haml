@@ -29,7 +29,7 @@
       %th.actions-heading
   %tbody
     - @project_presenters.each do |project|
-      %tr{ data: { "pjax-project-#{project.id}" => '' } }
+      %tr
         = render partial: 'project', locals: { project: project }
       %tr
         %td{colspan: 7}
