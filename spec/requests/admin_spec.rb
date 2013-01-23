@@ -40,6 +40,24 @@ describe "Admin", js: true do
 			visit admin_path
 			
 			current_path.should == admin_path
-		end
+    end
+
+    describe "event schedule" do
+      it "allows admin to add an event" do
+        pending "displaying a list of created events so the final line passes"
+        login_test_user
+
+        click_on "Admin"
+
+        page.should_not have_content("12/31/2013 in Denver")
+
+        fill_in "Date", with: '12/31/2013'
+        select 'Denver', from: 'Location'
+
+        click_on "Create Event"
+
+        page.should have_content("12/31/2013 in Denver")
+      end
+    end
 	end
 end

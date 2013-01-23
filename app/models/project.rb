@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  OFFICES = ['SF', 'NY', 'other']
+  OFFICES = ['SF', 'NY', 'Boulder', 'Denver', 'Santa Monica', 'Boston', 'London']
 
   attr_accessible :name, :owner, :description, :office, :other_technologies,
   					:rails, :ios, :android, :python, :java, :scala, :javascript

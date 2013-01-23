@@ -2,6 +2,7 @@ class AdminController < ApplicationController
   before_filter :require_admin
 
   def calendar
+    @event = Event.new
   end
   
   private
