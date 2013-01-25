@@ -18,12 +18,7 @@ PairExchange::Application.routes.draw do
     as: :logout
   }
   
-  get '/admin', {
-  	to: 'admin#calendar',
-  	as: :admin
-  }
-
-  resources :events, only: :create
+  resources :events, only: [:create, :new, :index]
   
   get 'test_login', to: 'testing_login#login', as: :test_login if Rails.env.test?
 end

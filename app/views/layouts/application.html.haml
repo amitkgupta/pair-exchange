@@ -18,7 +18,7 @@
         .container-fluid
           %a.brand(href="/") PairExchange
           - if admin_logged_in?
-            %a.btn(href="/admin") Admin
+            %a.btn(href="/events") Events
           %a.pull-right.btn(href="/logout") Sign out
           = yield(:filters) if content_for?(:filters)
     .container-fluid
