@@ -10,11 +10,8 @@ class EventsController < ApplicationController
   end
   
   def create
-    Event.create!(
-      location: params[:event][:location],
-          date: DateTime.strptime(params[:event][:date],'%m/%d/%Y').to_date
-    )
-
+    Event.create_from_form_details params[:event]
+    
     redirect_to events_path
   end
 
