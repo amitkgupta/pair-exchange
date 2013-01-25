@@ -18,9 +18,8 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new(params[:project])
-    project.owner = current_user
-    project.save!
+    Project.create_from_form_details_and_user params[:project], current_user
+    
     redirect_to root_path
   end
 

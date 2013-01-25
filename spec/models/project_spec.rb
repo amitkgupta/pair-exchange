@@ -28,4 +28,23 @@ describe Project do
 	
 	it { should belong_to(:owner) }
 	it { should have_and_belong_to_many(:interested_users) }
+	
+	describe ".create_from_form_details_and_user" do
+		it "creates a project from form details and given user as owner" do
+			project = described_class.create_from_form_details_and_user(
+				{
+					name: 'asdf',
+	            	office: 'SF',
+              		other_technologies: 'Cardboard'
+            	},
+				friendly_user
+			)
+			
+			project.should be_persisted
+			project.name.should == "asdf"
+			project.office.should == "SF"
+			project.other_technologies.should == "Cardboard"
+			project.owner.should == friendly_user
+		end
+	end
 end

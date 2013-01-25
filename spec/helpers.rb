@@ -6,18 +6,13 @@ def fake_logged_in_user
 	User.find_by_google_id(session[:google_id])
 end
 
-def test_user
-	User.find_by_email("testing.pair.exchange@gmail.com") ||
-		User.create(email: "testing.pair.exchange@gmail.com", google_id: '108496684470619075074')
-end
-
 def login_test_user
 	visit root_path
-	sign_in if sign_in_necessary?
+	sign_in_test_user if sign_in_necessary?
 	allow_access if allow_access_necessary?
 end
 
-def sign_in
+def sign_in_test_user
 	fill_in "Email", with: "testing.pair.exchange@gmail.com"
 	fill_in "Password", with: "john50buttons"	
 	click_on "Sign in"
@@ -35,7 +30,14 @@ def allow_access_necessary?
 	page.has_content? "Allow access"
 end
 
+def test_user
+	# john50buttons, Jay Pivot
+	User.find_by_email("testing.pair.exchange@gmail.com") ||
+		User.create(email: "testing.pair.exchange@gmail.com", google_id: '108496684470619075074')
+end
+
 def friendly_user
+	# pear50buttons, Pear Programming (probably?)
 	User.find_by_email('pear.programming@gmail.com') ||
 		User.create(email: 'pear.programming@gmail.com', google_id: '116917872107923397489')
 end

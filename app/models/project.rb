@@ -8,4 +8,11 @@ class Project < ActiveRecord::Base
   validates_presence_of :owner
 
   has_and_belongs_to_many :interested_users, class_name: "User"
+  
+  def self.create_from_form_details_and_user(form_details, owner)
+	new(form_details).tap do |project|
+		project.owner = owner
+		project.save!
+	end
+  end
 end
