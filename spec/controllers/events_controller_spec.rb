@@ -18,7 +18,7 @@ describe EventsController do
   describe "actions" do
     describe "when an admin is logged in" do
       before do
-        User.stub(:admin_emails).and_return(["pear.programming@gmail.com"])
+        User.stub(:admin_emails).and_return(["testing.pair.exchange@gmail.com"])
 
         fake_login_user
       end

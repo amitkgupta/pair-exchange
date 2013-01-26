@@ -1,4 +1,4 @@
-def fake_login_user(user = friendly_user)
+def fake_login_user(user = test_user)
 	session[:google_id] = user.google_id
 end
 
@@ -7,32 +7,46 @@ def fake_logged_in_user
 end
 
 def login_test_user
-	visit root_path
-	sign_in_test_user if sign_in_necessary?
-	allow_access if allow_access_necessary?
+	GoogleApiInterface.any_instance.stub(:authorize_from_code).with("code")
+	GoogleApiInterface.any_instance.stub(:current_user_google_id).and_return(test_user.google_id)
+	GoogleApiInterface.any_instance.stub(:current_user_email).and_return(test_user.email)
+	GoogleApiInterface.any_instance.stub(:image_url_for_user).with(test_user.google_id).and_return(test_user.profile_image_url)
+	GoogleApiInterface.any_instance.stub(:display_name_for_user).with(test_user.google_id).and_return(test_user.display_name)
+	
+	visit '/google_auth_callback?code=code'
 end
-
-def sign_in_test_user
-	fill_in "Email", with: "testing.pair.exchange@gmail.com"
-	fill_in "Password", with: ENV["JAY_PIVOT_GOOGLE_PASSWORD"]	
-	click_on "Sign in"
-end
-
-def sign_in_necessary?
-	page.has_content? "Sign in"
-end
-
-def allow_access
-	sleep 1 and click_on "Allow access"
-end
-
-def allow_access_necessary?
-	page.has_content? "Allow access"
-end
+# def login_test_user
+# 	visit root_path
+# 	sign_in_test_user if sign_in_necessary?
+# 	allow_access if allow_access_necessary?
+# end
+# 
+# def sign_in_test_user
+# 	fill_in "Email", with: "testing.pair.exchange@gmail.com"
+# 	fill_in "Password", with: ENV["JAY_PIVOT_GOOGLE_PASSWORD"]	
+# 	click_on "Sign in"
+# end
+# 
+# def sign_in_necessary?
+# 	page.has_content? "Sign in"
+# end
+# 
+# def allow_access
+# 	sleep 1 and click_on "Allow access"
+# end
+# 
+# def allow_access_necessary?
+# 	page.has_content? "Allow access"
+# end
 
 def test_user
 	User.find_by_email("testing.pair.exchange@gmail.com") ||
-		User.create(email: "testing.pair.exchange@gmail.com", google_id: '108496684470619075074')
+	User.create(
+		email: "testing.pair.exchange@gmail.com", 
+		google_id: '108496684470619075074',
+		profile_image_url: "https://lh6.googleusercontent.com/-2f9n0FXNPxo/AAAAAAAAAAI/AAAAAAAAABA/G01vbPsCRn8/photo.jpg?sz=50",
+		display_name: "Jay Pivot"
+	)
 end
 
 def friendly_user
