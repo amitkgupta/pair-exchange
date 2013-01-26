@@ -5,7 +5,7 @@ describe 'Interests', js: true do
     before do
       Project.create(name: 'My Lovely Project', owner: friendly_user)
     
- 	  login_test_user
+ 	  login_user
     end
 
     it 'allows you to toogle interest in a project' do
@@ -30,7 +30,7 @@ describe 'Interests', js: true do
       liked_project = Project.create(name: "drunk programmers think i'm hot", owner: loner)
       liked_project.interested_users = [loner]
     
-      login_test_user
+      login_user
 	
 	  lists_of_interested_users = page.all('.interested-users').map { |cell| cell.text.split(", ") }
 	  lists_of_interested_users.map(&:to_set).to_set.should == Set.new([

@@ -6,7 +6,7 @@ describe 'Projects', js: true do
       Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun', scala: true)
       Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', office: 'SF', ios: true)
     
-   	  login_test_user
+   	  login_user
     end
     
     it 'shows the names, descriptions, owners, office, and other technologies of all projects' do
@@ -65,7 +65,7 @@ describe 'Projects', js: true do
 
   describe 'adding a project' do
     it 'allows you to add a project' do
-      login_test_user
+      login_user
     
       page.should_not have_content('My 8th Grade Science Diorama')
       page.should_not have_content('Jay Pivot')
@@ -92,9 +92,9 @@ describe 'Projects', js: true do
   describe 'editing a project' do
     context 'when the current user owns the project' do
       before do
-        Project.create(owner: test_user, name: "New project, about to be edited", scala: true)
+        Project.create(owner: jay_pivot, name: "New project, about to be edited", scala: true)
         
-        login_test_user
+        login_user
       end
       
       it 'allows the user to edit it' do
@@ -119,7 +119,7 @@ describe 'Projects', js: true do
       before do
         Project.create(name: "someone else's project", owner: loner)
     
-   	    login_test_user
+   	    login_user
       end
       
       it "doesn't allow the user to edit" do
@@ -131,9 +131,9 @@ describe 'Projects', js: true do
   describe 'destroying a project' do
     context 'when the current user owns the project' do
       before do
-        Project.create(owner: test_user, name: "New project, about to be deleted")
+        Project.create(owner: jay_pivot, name: "New project, about to be deleted")
 
-        login_test_user
+        login_user
       end
       
       it 'allows the user to delete it' do
@@ -151,7 +151,7 @@ describe 'Projects', js: true do
       before do
         Project.create(name: "someone else's project", owner: loner)
     
-   	    login_test_user
+   	    login_user
       end
 
       it "doesn't allow the user to delete" do

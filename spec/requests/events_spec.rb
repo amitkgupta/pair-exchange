@@ -7,13 +7,13 @@ describe "Events", js: true do
 		end
 		
 		it "does not display an events button" do
-			login_test_user
+			login_user
 		
 			page.should_not have_content("Events")
 		end
 		
 		it "does not allow direct navigation to the events section" do
-			login_test_user
+			login_user
 			
 			visit events_path
 			
@@ -27,7 +27,7 @@ describe "Events", js: true do
 		end
 		
 		it "displays an events button taking the user to the events page" do
-			login_test_user
+			login_user
 		
 			click_on "Events"
 			
@@ -35,7 +35,7 @@ describe "Events", js: true do
 		end
 		
 		pending "allows direct navigation to the events page" do
-			login_test_user
+			login_user
 			
 			visit events_path
 			
@@ -47,7 +47,7 @@ describe "Events", js: true do
 		      Event.create(location: "Santa Monica", date: Date.new(1901, 1, 1))
 		      Event.create(location: "Boulder", date: Date.new(2011, 11, 11))
 		      
-		   	  login_test_user
+		   	  login_user
 		    end
     
 		    it 'shows the dates and locations of all events' do
@@ -60,7 +60,7 @@ describe "Events", js: true do
     	
     	describe "creating events" do
     		it "allows admins to create an event" do
-		        login_test_user
+		        login_user
 
         		click_on "Events"
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Markdown", js: true do
 	it "accepts markdown when on the project form and displays it properly on the project index" do
-		login_test_user
+		login_user
 		
 		click_on "Add project"
 		fill_in "Description", with: "[foo](https://www.youtube.com/watch?v=7rE0-ek6MZA)
