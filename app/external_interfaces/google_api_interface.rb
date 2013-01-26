@@ -1,7 +1,7 @@
 require 'google/api_client'
 class GoogleApiInterface
-	def self.client_id; "1030260537524.apps.googleusercontent.com"; end
-	def self.client_secret; "fmD_i-Z7AEZ-ixUBXKAvuIEd"; end
+	def self.client_id; ENV["GOOGLE_OAUTH2_CLIENT_ID"]; end
+	def self.client_secret; ENV["GOOGLE_OAUTH2_CLIENT_SECRET"]; end
 	def self.user_email_url; "https://www.googleapis.com/auth/userinfo.email"; end
 	def self.google_plus_url; "https://www.googleapis.com/auth/plus.me"; end
 	def self.host; HOST; end

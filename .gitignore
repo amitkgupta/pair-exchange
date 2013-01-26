@@ -18,3 +18,5 @@
 /log/*.log
 /tmp
 
+# Ignore environment varaibles with private information
+heroku_env.rb

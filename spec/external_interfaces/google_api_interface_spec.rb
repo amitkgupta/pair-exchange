@@ -12,14 +12,13 @@ describe GoogleApiInterface do
 			authorization_uri = subject.authorization_uri
 			authorization_uri.authority.should == "accounts.google.com"
 			authorization_uri.path.should == "/o/oauth2/auth"
-			authorization_uri.query_values.should == {
-				"access_type" => "offline",
-				"approval_prompt" => "auto",
-				"client_id" => "1030260537524.apps.googleusercontent.com",
-				"redirect_uri" => "http://localhost:3000/google_auth_callback",
-				"response_type" => "code",
-				"scope" =>  "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
-			}
+			query_values = authorization_uri.query_values
+			query_values["access_type"].should == "offline"
+			query_values["approval_prompt"].should == "auto"
+			query_values["client_id"].should include(".apps.googleusercontent.com")
+			query_values["redirect_uri"].should == "http://localhost:3000/google_auth_callback"
+			query_values["response_type"].should == "code"
+			query_values["scope"].should == "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me"
 		end
 	end
 	

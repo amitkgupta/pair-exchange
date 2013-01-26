@@ -14,7 +14,7 @@ end
 
 def sign_in_test_user
 	fill_in "Email", with: "testing.pair.exchange@gmail.com"
-	fill_in "Password", with: "john50buttons"	
+	fill_in "Password", with: ENV["JAY_PIVOT_GOOGLE_PASSWORD"]	
 	click_on "Sign in"
 end
 
@@ -31,19 +31,16 @@ def allow_access_necessary?
 end
 
 def test_user
-	# john50buttons, Jay Pivot
 	User.find_by_email("testing.pair.exchange@gmail.com") ||
 		User.create(email: "testing.pair.exchange@gmail.com", google_id: '108496684470619075074')
 end
 
 def friendly_user
-	# pear50buttons, Pear Programming (probably?)
 	User.find_by_email('pear.programming@gmail.com') ||
 		User.create(email: 'pear.programming@gmail.com', google_id: '116917872107923397489')
 end
 
 def loner
-	# solo50buttons, Solo Programming
 	User.find_by_email('o.solo.mioooo@gmail.com') ||
 		User.create(email: 'o.solo.mioooo@gmail.com', google_id: '117952378088929416951')
 end
