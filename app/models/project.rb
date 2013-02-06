@@ -16,4 +16,9 @@ class Project < ActiveRecord::Base
 		project.save!
 	end
   end
+  
+  def update_schedule_from_form_details(form_details)
+  	scheduled_event_ids = form_details.select { |key, _| /event-\d+/.match(key) }.values
+  	self.events = scheduled_event_ids.map { |id| Event.find id }
+  end
 end

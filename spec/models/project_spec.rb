@@ -48,4 +48,21 @@ describe Project do
 			project.owner.should == friendly_user
 		end
 	end
+	
+	describe "#update_schedule_from_form_details" do
+		it "should reset the projects' list of events to based on the form details" do
+			event_to_be_scheduled = Event.create
+			event_to_be_unscheduled = Event.create
+			
+			project = described_class.create(owner: friendly_user)
+			project.events << event_to_be_unscheduled
+			project.save!
+			
+			project.events.should == [event_to_be_unscheduled]
+			
+			project.update_schedule_from_form_details("event-#{event_to_be_scheduled.id}" => "#{event_to_be_scheduled.id}")
+			
+			project.events.should == [event_to_be_scheduled]
+		end
+	end
 end

@@ -45,7 +45,17 @@ class ProjectsController < ApplicationController
   end
   
   def schedule
-  	@events = Event.for_location Project.find(params[:id]).location
+  	ensure_access do |project|
+  	  @project = project
+  	  @events = Event.for_location @project.location
+  	end
+  end
+  
+  def update_schedule
+    ensure_access do |project|
+      project.update_schedule_from_form_details params
+      redirect_to root_path
+    end
   end
   
   private

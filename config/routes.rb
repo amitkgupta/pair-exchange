@@ -4,6 +4,7 @@ PairExchange::Application.routes.draw do
   resources :projects, except: :show do
     member do
       get 'schedule'
+      put 'update_schedule'
     end
   end
   

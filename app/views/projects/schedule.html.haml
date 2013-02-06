@@ -1,2 +1,5 @@
-- @events.each do |event|
-  %p= "#{event.date} in #{event.location}, #{event.time}"
+= form_tag(update_schedule_project_path(@project.id), method: :put) do
+  - @events.each do |event|
+    =check_box_tag :"event-#{event.id}", event.id, @project.events.include?(event)
+    =label_tag :"event-#{event.id}", "#{event.date} in #{event.location}, #{event.time}"
+  =submit_tag "Update schedule for this project"

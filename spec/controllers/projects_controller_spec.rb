@@ -29,6 +29,10 @@ describe ProjectsController do
     specify do
       {get: '/projects/1/schedule'}.should route_to(controller: 'projects', action: 'schedule', id: '1')
     end 
+    
+    specify do
+      {put: '/projects/1/update_schedule'}.should route_to(controller: 'projects', action: 'update_schedule', id: '1')
+    end
   end
   
   describe 'actions' do
@@ -176,18 +180,67 @@ describe ProjectsController do
     end
     
     describe 'schedule' do
-      let!(:project) { Project.create(owner: fake_logged_in_user, location: "Santa Monica") }
-      let!(:sf_event) { Event.create(location: "SF") }
-      let!(:santa_monica_event) { Event.create(location: "Santa Monica") }
+      context "when the project belongs to the logged in user" do        
+        let!(:project) { Project.create(owner: fake_logged_in_user, location: "Santa Monica") }
+        let!(:sf_event) { Event.create(location: "SF") }
+        let!(:santa_monica_event) { Event.create(location: "Santa Monica") }
 
-      it 'lists all the events for the same location as the project' do
-        get :schedule, id: project.id
+        it 'lists all the events for the same location as the project' do
+          get :schedule, id: project.id
         
-        assigns(:events).should == [santa_monica_event]	
+          assigns(:project).should == project
+          assigns(:events).should == [santa_monica_event]	
+        end
+      end
+  
+      context "when the project does not belong to the logged in user" do
+        it 'forbids the request' do
+          fake_logged_in_user.should_not == loner
+          project = Project.create(owner: loner)
+          
+          get :schedule, id: project.id
+          
+          response.status.should == 403
+        end
       end
     end
-    
+      
     describe 'update_schedule' do
+      context 'when the project belongs to the logged in user' do
+  	    let(:project) { Project.create(owner: fake_logged_in_user) }
+	    let(:event_to_be_unscheduled) { Event.create }
+	    let(:event_to_be_scheduled) { Event.create }
+	    
+	    before do
+	      project.events << event_to_be_unscheduled
+	      project.save!
+	    end
+	   
+        it "updates adds the event to the projects' events" do
+          project.events.should == [event_to_be_unscheduled]
+        
+          put :update_schedule, id: project.id, "event-#{event_to_be_scheduled.id}" => "#{event_to_be_scheduled.id}"
+ 
+          project.reload.events.should == [event_to_be_scheduled]
+        end
+
+        it 'redirects to /' do
+          put :update_schedule, id: project.id
+
+          response.should redirect_to(root_path)
+        end
+      end
+    
+      context 'when the project does not belong to the logged in user' do
+        it 'forbids the request' do
+          fake_logged_in_user.should_not == loner
+          project = Project.create(owner: loner)
+
+      	  put :update_schedule, id: project.id
+      
+          response.status.should == 403
+        end
+	  end
     end
   end
 end
