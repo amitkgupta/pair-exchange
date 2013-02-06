@@ -1,5 +1,5 @@
 - @events.each do |event|
-  %p= "#{event.date} in #{event.location}"
+  %p= "#{event.date} in #{event.location}, #{event.time}"
 %a{href: 'events/new', class: 'btn'}
   %i{class: 'icon-plus'}
   = " Add Event"

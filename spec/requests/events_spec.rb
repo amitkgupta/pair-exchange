@@ -64,16 +64,17 @@ describe "Events", js: true do
 
         		click_on "Events"
 
-   			    page.should_not have_content("2013-12-31 in Denver")
+   			    page.should_not have_content("2013-12-31 in Denver, 6pm - 9pm")
    			    
    			    click_on "Add Event"
    			    
 		        fill_in "Date", with: '12/31/2013'
         		select 'Denver', from: 'Location'
+        		fill_in "Time", with: "6pm - 9pm"
 
 		        click_on "Create Event"
 
-		        page.should have_content("2013-12-31 in Denver")
+		        page.should have_content("2013-12-31 in Denver, 6pm - 9pm")
     		end
     	end
 	end
