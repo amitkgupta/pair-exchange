@@ -1,27 +1,32 @@
-%td
-  =image_tag "#{project.owner.profile_image_url}"
-  %span.display-name= project.owner.display_name
-%td
-  .project-name= project.name
-%td
-  .description= markdown project.description
-%td
-  %span=image_tag(project.rails ? "rails-icon.png" : "rails-icon-grey.png", title: "Rails")
-  %span=image_tag(project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png", title: "Javascript")
-  %span=image_tag(project.android ? "android-icon.png" : "android-icon-grey.png", title: "Android")
-  %span=image_tag(project.ios ? "apple-icon.png" : "apple-icon-grey.png", title: "iOS")
-  %span=image_tag(project.scala ? "scala-icon.png" : "scala-icon-grey.png", title: "Scala")
-  %span=image_tag(project.python ? "python-icon.png" : "python-icon-grey.png", title: "Python")
-  %span=image_tag(project.java ? "java-icon.png" : "java-icon-grey.png", title: "Java")
-%td
-  .other_technologies= project.other_technologies
-%td
-  .office= project.office          
-%td
-  - if project.current_user_interested
-    %span.recant-interest= link_to image_tag('thumbs-up.png', title: "Unlike"), interest_path(project_id: project.id), method: :delete
-  - else
-    %span.declare-interest= link_to image_tag('thumbs-up-grey.png', title: "Like"), interests_path(project_id: project.id), method: :post
-  - if project.current_user_owns
-    %span.edit-project= link_to image_tag('edit.png', title: "Edit"), edit_project_path(project.id)
-    %span.torch-project= link_to image_tag('fire.png', title: "Delete"), "/projects/#{project.id}", method: :delete
+.row-fluid
+  .span2
+    =image_tag "#{project.owner.profile_image_url}"
+    %span.display-name= project.owner.display_name
+  .span2
+    .project-name= project.name
+  .span2
+    .description= markdown project.description
+  .span2
+    %span=image_tag(project.rails ? "rails-icon.png" : "rails-icon-grey.png", title: "Rails")
+    %span=image_tag(project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png", title: "Javascript")
+    %span=image_tag(project.android ? "android-icon.png" : "android-icon-grey.png", title: "Android")
+    %span=image_tag(project.ios ? "apple-icon.png" : "apple-icon-grey.png", title: "iOS")
+    %span=image_tag(project.scala ? "scala-icon.png" : "scala-icon-grey.png", title: "Scala")
+    %span=image_tag(project.python ? "python-icon.png" : "python-icon-grey.png", title: "Python")
+    %span=image_tag(project.java ? "java-icon.png" : "java-icon-grey.png", title: "Java")
+  .span2
+    .other_technologies= project.other_technologies
+  .span1
+    .office= project.office          
+  .span1
+    - if project.current_user_interested
+      %span.recant-interest= link_to image_tag('thumbs-up.png', title: "Unlike"), interest_path(project_id: project.id), method: :delete
+    - else
+      %span.declare-interest= link_to image_tag('thumbs-up-grey.png', title: "Like"), interests_path(project_id: project.id), method: :post
+    - if project.current_user_owns
+      %span.edit-project= link_to image_tag('edit.png', title: "Edit"), edit_project_path(project.id)
+      %span.torch-project= link_to image_tag('fire.png', title: "Delete"), "/projects/#{project.id}", method: :delete
+.row-fluid
+  .span12
+    = image_tag "thumbs-up-small.png"
+    %span.interested-users= "#{project.interested_users.join(', ')}"

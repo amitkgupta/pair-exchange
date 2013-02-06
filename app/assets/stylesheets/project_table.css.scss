@@ -1,0 +1,22 @@
+#projects-table {
+  .head {
+    font-weight: bold;
+  }
+
+  .project {
+    font-size: 12px;
+
+    &:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .head, .project {
+    overflow: hidden;
+    padding: 10px 0;
+
+    .span1, .span2, .span3, .span4 {
+      padding: 10px;
+    }
+  }
+}

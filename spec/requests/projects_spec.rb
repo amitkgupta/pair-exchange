@@ -12,12 +12,12 @@ describe 'Projects', js: true do
     it 'shows the names, descriptions, owners, office, and other technologies of all projects' do
       within("h3") { page.should have_content("Projects for All Offices") }
 
-      lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
+      lovely_project_row = page.all('.project').find { |row| row.has_content? 'My Lovely Project' }
       lovely_project_row.should be_present
       lovely_project_row.should have_content('pear.programming@gmail.com')
       lovely_project_row.should have_content('fun')
     	
-      lonely_project_row = page.all('tr').find { |row| row.has_content? 'My Lonely Project' }
+      lonely_project_row = page.all('.project').find { |row| row.has_content? 'My Lonely Project' }
       lonely_project_row.should be_present
       lonely_project_row.should have_content('o.solo.mioooo@gmail.com')
       lonely_project_row.should have_content('wot is it?')
@@ -32,10 +32,10 @@ describe 'Projects', js: true do
 
       within("h3") { page.should have_content("Projects for SF Office") }
 
-      lovely_project_row = page.all('tr').find { |row| row.has_content? 'My Lovely Project' }
+      lovely_project_row = page.all('.project').find { |row| row.has_content? 'My Lovely Project' }
       lovely_project_row.should_not be_present
 
-      lonely_project_row = page.all('tr').find { |row| row.has_content? 'My Lonely Project' }
+      lonely_project_row = page.all('.project').find { |row| row.has_content? 'My Lonely Project' }
       lonely_project_row.should be_present
     end
 
