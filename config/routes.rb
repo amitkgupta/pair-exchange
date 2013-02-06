@@ -1,7 +1,11 @@
 PairExchange::Application.routes.draw do
   root to: 'projects#index'
 
-  resources :projects, except: :show
+  resources :projects, except: :show do
+    member do
+      get 'schedule'
+    end
+  end
   
   resources :interests, only: :create
   delete '/interests', {

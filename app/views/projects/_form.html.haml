@@ -5,8 +5,8 @@
     %p Owned By
     =image_tag "#{@owner.profile_image_url}"
     %span.display-name= @owner.display_name
-  = f.label :office
-  = f.select :office, Project::OFFICES
+  = f.label :location
+  = f.select :location, Project::LOCATIONS
   #rails-checkbox-container.checkbox-container
     .used-technology=image_tag "rails-icon.png", title: "Rails"
     .unused-technology=image_tag "rails-icon-grey.png", title: "Rails"

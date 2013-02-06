@@ -1,21 +1,21 @@
 - content_for :filters do
   %ul.nav.secondary-nav.pull-right
-    %li#office-filter.dropdown(data-dropdown="dropdown")
+    %li#location-filter.dropdown(data-dropdown="dropdown")
       %a.dropdown-toggle(data-toggle="dropdown" href="#")
-        By Office
+        By Location
         %span.caret
       %ul.dropdown-menu
         %li
-          %a{"href" => projects_path} All Offices
-        - Project::OFFICES.each do |office|
+          %a{"href" => projects_path} All Locations
+        - Project::LOCATIONS.each do |location|
           %li
-            %a{"href" => projects_path(office: office)}= office
+            %a{"href" => projects_path(location: location)}= location
 
 %h3
-  - if @office
-    = "Projects for #{@office} Office"
+  - if @location
+    = "Projects for #{@location} Location"
   - else
-    Projects for All Offices
+    Projects for All Locations
 
 #projects-table.row-fluid.striped
   .span12
@@ -25,7 +25,7 @@
       .span2.description-heading Description
       .span2.technologies-heading Technologies
       .span2.other-technologies-heading Other Technologies
-      .span1.office-heading Office
+      .span1.location-heading Location
       .span1.actions-heading
     - @project_presenters.each do |project|
       .row-fluid.project

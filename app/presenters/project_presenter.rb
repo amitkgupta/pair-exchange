@@ -1,5 +1,5 @@
 class ProjectPresenter
-	attr_reader :id, :name, :description, :office, :other_technologies, :owner,
+	attr_reader :id, :name, :description, :location, :other_technologies, :owner,
 				:current_user_owns, :current_user_interested, :interested_users,
 				:rails, :ios, :android, :python, :java, :scala, :javascript
 
@@ -7,7 +7,7 @@ class ProjectPresenter
 		@id = project.id
 		@name = project.name
 		@description = project.description
-		@office = project.office
+		@location = project.location
 		@rails = project.rails
 		@ios = project.ios
 		@android = project.android

@@ -7,7 +7,7 @@ describe Project do
 				"name",
 				"owner", 
 				"description",
-				"office",
+				"location",
 				"other_technologies",
 				"rails",
 				"ios",
@@ -28,13 +28,14 @@ describe Project do
 	
 	it { should belong_to(:owner) }
 	it { should have_and_belong_to_many(:interested_users) }
+	it { should have_and_belong_to_many(:events) }
 	
 	describe ".create_from_form_details_and_user" do
 		it "creates a project from form details and given user as owner" do
 			project = described_class.create_from_form_details_and_user(
 				{
 					name: 'asdf',
-	            	office: 'SF',
+	            	location: 'SF',
               		other_technologies: 'Cardboard'
             	},
 				friendly_user
@@ -42,7 +43,7 @@ describe Project do
 			
 			project.should be_persisted
 			project.name.should == "asdf"
-			project.office.should == "SF"
+			project.location.should == "SF"
 			project.other_technologies.should == "Cardboard"
 			project.owner.should == friendly_user
 		end

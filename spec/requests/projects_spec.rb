@@ -4,13 +4,13 @@ describe 'Projects', js: true do
   describe 'listing the projects' do
     before do
       Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun', scala: true)
-      Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', office: 'SF', ios: true)
+      Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', location: 'SF', ios: true)
     
    	  login_user
     end
     
-    it 'shows the names, descriptions, owners, office, and other technologies of all projects' do
-      within("h3") { page.should have_content("Projects for All Offices") }
+    it 'shows the names, descriptions, owners, location, and other technologies of all projects' do
+      within("h3") { page.should have_content("Projects for All Locations") }
 
       lovely_project_row = page.all('.project').find { |row| row.has_content? 'My Lovely Project' }
       lovely_project_row.should be_present
@@ -24,13 +24,13 @@ describe 'Projects', js: true do
       lonely_project_row.should have_content('SF')
     end
 
-    it "filters by office" do
-      within("#office-filter") do
-        click_on "By Office"
+    it "filters by location" do
+      within("#location-filter") do
+        click_on "By Location"
         click_on "SF"
       end
 
-      within("h3") { page.should have_content("Projects for SF Office") }
+      within("h3") { page.should have_content("Projects for SF Location") }
 
       lovely_project_row = page.all('.project').find { |row| row.has_content? 'My Lovely Project' }
       lovely_project_row.should_not be_present
@@ -75,7 +75,7 @@ describe 'Projects', js: true do
       within('#new_project') do
         fill_in 'Project Name', with: 'My 8th Grade Science Diorama'
         page.should_not have_content('Owned By')
-        select 'SF', from: 'Office'
+        select 'SF', from: 'Location'
         fill_in 'Other technologies', with: 'Cardboard'
 		page.find('#scala-checkbox-container').click
         click_on 'Create Project'

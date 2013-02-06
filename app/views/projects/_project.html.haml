@@ -17,13 +17,14 @@
   .span2
     .other_technologies= project.other_technologies
   .span1
-    .office= project.office          
+    .location= project.location          
   .span1
     - if project.current_user_interested
       %span.recant-interest= link_to image_tag('thumbs-up.png', title: "Unlike"), interest_path(project_id: project.id), method: :delete
     - else
       %span.declare-interest= link_to image_tag('thumbs-up-grey.png', title: "Like"), interests_path(project_id: project.id), method: :post
     - if project.current_user_owns
+      %span.schedule-project= link_to image_tag('calendar.png', title: 'Schedule'), schedule_project_path(project.id)
       %span.edit-project= link_to image_tag('edit.png', title: "Edit"), edit_project_path(project.id)
       %span.torch-project= link_to image_tag('fire.png', title: "Delete"), "/projects/#{project.id}", method: :delete
 .row-fluid

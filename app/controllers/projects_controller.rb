@@ -3,9 +3,9 @@ require_relative '../presenters/project_presenter.rb'
 class ProjectsController < ApplicationController
   def index
     @projects = Project.includes(:owner, :interested_users)
-    if params[:office]
-      @office = params[:office].to_s
-      @projects = @projects.where(office: @office)
+    if params[:location]
+      @location = params[:location].to_s
+      @projects = @projects.where(location: @location)
     end
 
     @project_presenters = @projects.all.map do |project|
@@ -42,6 +42,10 @@ class ProjectsController < ApplicationController
       project.destroy
       redirect_to root_path
     end
+  end
+  
+  def schedule
+  	@events = Event.for_location Project.find(params[:id]).location
   end
   
   private

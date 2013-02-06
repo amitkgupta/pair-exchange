@@ -24,7 +24,11 @@ describe ProjectsController do
     
     specify do
       {delete: '/projects/1'}.should route_to(controller: 'projects', action: 'destroy', id: '1')
-    end    
+    end   
+    
+    specify do
+      {get: '/projects/1/schedule'}.should route_to(controller: 'projects', action: 'schedule', id: '1')
+    end 
   end
   
   describe 'actions' do
@@ -43,14 +47,14 @@ describe ProjectsController do
         get :index
         assigns(:projects).should == Project.all
         assigns(:project_presenters).each{ |project| project.should be_a(ProjectPresenter) }
-        assigns(:office).should be_nil
+        assigns(:location).should be_nil
       end
 
-      context "with an office filter parameter" do
-        it "should only show projects for that office" do
-          get :index, office: "NY"
-          assigns(:projects).should == Project.where(office: "NY")
-          assigns(:office).should == "NY"
+      context "with an location filter parameter" do
+        it "should only show projects for that location" do
+          get :index, location: "NY"
+          assigns(:projects).should == Project.where(location: "NY")
+          assigns(:location).should == "NY"
         end
       end
     end
@@ -95,13 +99,13 @@ describe ProjectsController do
         expect do
           post :create, project:
             { name: 'asdf',
-              office: 'SF',
+              location: 'SF',
               other_technologies: 'Cardboard'
             }
         end.to change(Project, :count).by(1)
         Project.last.name.should == 'asdf'
         Project.last.owner.should == fake_logged_in_user
-        Project.last.office.should == 'SF'
+        Project.last.location.should == 'SF'
         Project.last.other_technologies.should == 'Cardboard'
       end
 
@@ -169,6 +173,21 @@ describe ProjectsController do
           project.reload.should be_present
         end
   	  end
+    end
+    
+    describe 'schedule' do
+      let!(:project) { Project.create(owner: fake_logged_in_user, location: "Santa Monica") }
+      let!(:sf_event) { Event.create(location: "SF") }
+      let!(:santa_monica_event) { Event.create(location: "Santa Monica") }
+
+      it 'lists all the events for the same location as the project' do
+        get :schedule, id: project.id
+        
+        assigns(:events).should == [santa_monica_event]	
+      end
+    end
+    
+    describe 'update_schedule' do
     end
   end
 end

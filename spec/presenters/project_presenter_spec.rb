@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe ProjectPresenter do
-	it "includes id name, description, office, technologies, and other technologies" do
+	it "includes id name, description, location, technologies, and other technologies" do
 		project = Project.new(
 			name: 'foo',
 			description: 'a fun project',
-			office: 'SF',
+			location: 'SF',
 			other_technologies: 'cardboard',
 			rails: true,
 			javascript: true,
@@ -21,7 +21,7 @@ describe ProjectPresenter do
 		presented_project.id.should == project.id
 		presented_project.name.should == 'foo'
 		presented_project.description.should == 'a fun project'
-		presented_project.office.should == 'SF'
+		presented_project.location.should == 'SF'
 		presented_project.other_technologies.should == 'cardboard'
 		presented_project.rails.should == true
 		presented_project.javascript.should == true
