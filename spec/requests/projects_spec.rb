@@ -55,21 +55,23 @@ describe 'Projects', js: true do
   end
 
   describe 'adding a project' do
-    it 'allows you to add a project' do
+    before do
       login_user
     
       page.should_not have_content('My 8th Grade Science Diorama')
       page.should_not have_content('Jay Pivot')
   
-      click_on "Add project"
-    
+      click_on "Add"    
+    end
+
+    it 'allows you to add a project' do
       within('#new_project') do
         fill_in 'Project Name', with: 'My 8th Grade Science Diorama'
         page.should_not have_content('Owned By')
         select 'SF', from: 'Location'
         fill_in 'Other technologies', with: 'Cardboard'
-		page.find('#ios-checkbox-container').click
-        click_on 'Create Project'
+		    page.find('#ios-checkbox-container').click
+        click_on "Save"
       end
       
       current_path.should == root_path    
@@ -77,6 +79,23 @@ describe 'Projects', js: true do
       page.should have_content('Jay Pivot')
       page.should have_xpath("//img[@src=\"/assets/apple-icon.png\"]")
       page.should_not have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]")
+    end
+
+    it "allows you to cancel adding a project" do
+      login_user
+    
+      page.should_not have_content('My 8th Grade Science Diorama')
+      page.should_not have_content('Jay Pivot')
+  
+      click_on "Add"
+    
+      within('#new_project') do
+        fill_in 'Project Name', with: 'My 8th Grade Science Diorama'
+        click_on 'Cancel'
+      end
+      
+      current_path.should == root_path    
+      page.should_not have_content('My 8th Grade Science Diorama')
     end
   end
   
@@ -95,14 +114,31 @@ describe 'Projects', js: true do
         page.find('.edit-project a').click
 		        
         fill_in 'Project Name', with: 'Just got edited'
-		page.find('#ios-checkbox-container').click
-        click_on 'Update Project'
-        
+		    page.find('#ios-checkbox-container').click
+        click_on "Save"
+
         current_path.should == root_path
         page.should have_content('Just got edited')
-        page.should_not have_content('New Project, about to be edited')
+        page.should_not have_content('New project, about to be edited')
         page.should_not have_xpath("//img[@src=\"/assets/apple-icon.png\"]")
         page.should have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]")        
+      end
+
+      it "allows the user to cancel the edit" do
+        page.should have_content('New project, about to be edited')
+        page.all('.edit-project').count.should == 1
+        
+        page.find('.edit-project a').click
+            
+        fill_in 'Project Name', with: 'Just got edited'
+        page.find('#ios-checkbox-container').click
+        click_on 'Cancel'
+        
+        current_path.should == root_path
+        page.should_not have_content('Just got edited')
+        page.should have_content('New project, about to be edited')
+        page.should have_xpath("//img[@src=\"/assets/apple-icon.png\"]")
+        page.should_not have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]") 
       end
     end
     

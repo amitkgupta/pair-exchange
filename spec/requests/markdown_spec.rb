@@ -4,7 +4,7 @@ describe "Markdown", js: true do
 	it "accepts markdown when on the project form and displays it properly on the project index" do
 		login_user
 		
-		click_on "Add project"
+		click_on "Add"
 		fill_in "Description", with: "[foo](https://www.youtube.com/watch?v=7rE0-ek6MZA)
 
 **bold text**
@@ -12,7 +12,7 @@ describe "Markdown", js: true do
 ~~~.ruby
 my_long_variable_name = Math.PI
 ~~~"
-		click_on "Create Project"
+		click_on "Save"
 		
 		within('.description') do
 			page.should have_css('p', count: 2)

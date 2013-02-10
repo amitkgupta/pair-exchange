@@ -27,5 +27,7 @@
   = f.text_field :other_technologies
   = f.label :description, "Description (#{link_to 'Markdown cheat sheet', 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code'})".html_safe
   = f.text_area :description
-  = f.submit
+  = f.submit "Save", type: :image, src: '/assets/save.png', title: "Save"
+  = link_to image_tag('cancel.png', title: "Cancel"), root_path
+
 

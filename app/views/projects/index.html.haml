@@ -35,7 +35,6 @@
             .span12
               = image_tag "thumbs-up-small.png"
               %span.interested-users= "#{project.interested_users.join(', ')}"
-
-%a{href: 'projects/new', class: 'btn'}
-  %i{class: 'icon-plus'}
-  = " Add project"
+  .span12
+    .row-fluid.add-project
+      =link_to image_tag('add.png', title: "New Project"), new_project_path
