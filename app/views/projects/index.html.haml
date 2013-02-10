@@ -24,13 +24,17 @@
       .span2.project-name-heading Project Name
       .span2.description-heading Description
       .span2.technologies-heading Technologies
-      .span2.other-technologies-heading Other Technologies
-      .span1.location-heading Location
-      .span1.actions-heading
+      .span2.location-heading Location
+      .span2.actions-heading Actions
     - @project_presenters.each do |project|
       .row-fluid.project
         .span12
-          = render 'project', project: project
+          .row-fluid{id: "project-#{project.id}-details"}
+            = render 'project_details', project: project
+          .row-fluid{id: "project-#{project.id}-interested-users"}
+            .span12
+              = image_tag "thumbs-up-small.png"
+              %span.interested-users= "#{project.interested_users.join(', ')}"
 
 %a{href: 'projects/new', class: 'btn'}
   %i{class: 'icon-plus'}
