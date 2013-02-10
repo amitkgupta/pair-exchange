@@ -1,7 +1,7 @@
 class ProjectPresenter
 	attr_reader :id, :name, :description, :location, :other_technologies, :owner,
 				:current_user_owns, :current_user_interested, :interested_users,
-				:rails, :ios, :android, :python, :java, :scala, :javascript
+				:rails, :ios, :android, :javascript
 
 	def initialize(project, current_user = nil)
 		@id = project.id
@@ -11,9 +11,6 @@ class ProjectPresenter
 		@rails = project.rails
 		@ios = project.ios
 		@android = project.android
-		@python = project.python
-		@java = project.java
-		@scala = project.scala
 		@javascript = project.javascript
 		@other_technologies = project.other_technologies
 		@owner = UserPresenter.new(project.owner) if project.owner.present?

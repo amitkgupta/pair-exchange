@@ -11,9 +11,6 @@ describe ProjectPresenter do
 			javascript: true,
 			android: false,
 			ios: false,
-			java: false,
-			python: false,
-			scala: false
 		)
 		
 		presented_project = described_class.new(project)
@@ -27,9 +24,6 @@ describe ProjectPresenter do
 		presented_project.javascript.should == true
 		presented_project.android.should == false
 		presented_project.ios.should == false
-		presented_project.java.should == false
-		presented_project.python.should == false
-		presented_project.scala.should == false		
 	end
 	
 	describe "presented owner" do

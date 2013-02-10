@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206044510) do
+ActiveRecord::Schema.define(:version => 20130210201932) do
 
   create_table "events", :force => true do |t|
     t.date   "date"
@@ -33,10 +33,7 @@ ActiveRecord::Schema.define(:version => 20130206044510) do
     t.boolean "rails"
     t.boolean "ios"
     t.boolean "android"
-    t.boolean "python"
-    t.boolean "scala"
     t.boolean "javascript"
-    t.boolean "java"
   end
 
   create_table "projects_users", :id => false, :force => true do |t|

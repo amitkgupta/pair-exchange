@@ -23,18 +23,6 @@
     .used-technology=image_tag "android-icon.png", title: "Android"
     .unused-technology=image_tag "android-icon-grey.png", title: "Android"
     = f.check_box :android, style: 'visibility: hidden'
-  #scala-checkbox-container.checkbox-container
-    .used-technology=image_tag "scala-icon.png", title: "Scala"
-    .unused-technology=image_tag "scala-icon-grey.png", title: "Scala"
-    = f.check_box :scala, style: 'visibility: hidden'
-  #python-checkbox-container.checkbox-container
-    .used-technology=image_tag "python-icon.png", title: "Python"
-    .unused-technology=image_tag "python-icon-grey.png", title: "Python"
-    = f.check_box :python, style: 'visibility: hidden'
-  #java-checkbox-container.checkbox-container
-    .used-technology=image_tag "java-icon.png", title: "Java"
-    .unused-technology=image_tag "java-icon-grey.png", title: "Java"
-    = f.check_box :java, style: 'visibility: hidden'
   = f.label :other_technologies
   = f.text_field :other_technologies
   = f.label :description, "Description (#{link_to 'Markdown cheat sheet', 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code'})".html_safe

@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   LOCATIONS = ['SF', 'NY', 'Boulder', 'Denver', 'Santa Monica', 'Boston', 'London']
 
   attr_accessible :name, :owner, :description, :location, :other_technologies,
-  					:rails, :ios, :android, :python, :java, :scala, :javascript
+  					:rails, :ios, :android, :javascript
 
   belongs_to :owner, inverse_of: :projects, class_name: "User", foreign_key: "user_id"
   validates_presence_of :owner

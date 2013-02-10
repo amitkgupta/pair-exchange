@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Projects', js: true do
   describe 'listing the projects' do
     before do
-      Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun', scala: true)
+      Project.create(name: 'My Lovely Project', owner: friendly_user, description: 'fun', rails: true)
       Project.create(name: 'My Lonely Project', owner: loner, other_technologies: 'wot is it?', location: 'SF', ios: true)
     
    	  login_user
@@ -43,20 +43,11 @@ describe 'Projects', js: true do
       page.should have_xpath("//img[@src=\"/assets/android-icon-grey.png\"][@title=\"Android\"]", count: 2)
       page.should_not have_xpath("//img[@src=\"/assets/android-icon.png\"]")
 
-      page.should have_xpath("//img[@src=\"/assets/rails-icon-grey.png\"]", count: 2)
-      page.should_not have_xpath("//img[@src=\"/assets/rails-icon.png\"]")      
+      page.should have_xpath("//img[@src=\"/assets/rails-icon-grey.png\"]", count: 1)
+      page.should have_xpath("//img[@src=\"/assets/rails-icon.png\"]", count: 1)      
 
       page.should have_xpath("//img[@src=\"/assets/javascript-icon-grey.png\"]", count: 2)
       page.should_not have_xpath("//img[@src=\"/assets/javascript-icon.png\"]")      
-
-      page.should have_xpath("//img[@src=\"/assets/python-icon-grey.png\"]", count: 2)
-      page.should_not have_xpath("//img[@src=\"/assets/python-icon.png\"]")      
-
-      page.should have_xpath("//img[@src=\"/assets/java-icon-grey.png\"]", count: 2)
-      page.should_not have_xpath("//img[@src=\"/assets/java-icon.png\"]")      
-
-      page.should have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]", count: 1)
-      page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]", count: 1)      
 
       page.should have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]", count: 1)
       page.should have_xpath("//img[@src=\"/assets/apple-icon.png\"]", count: 1)      
@@ -77,22 +68,22 @@ describe 'Projects', js: true do
         page.should_not have_content('Owned By')
         select 'SF', from: 'Location'
         fill_in 'Other technologies', with: 'Cardboard'
-		page.find('#scala-checkbox-container').click
+		page.find('#ios-checkbox-container').click
         click_on 'Create Project'
       end
       
       current_path.should == root_path    
       page.should have_content('My 8th Grade Science Diorama')
       page.should have_content('Jay Pivot')
-      page.should have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
-      page.should_not have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")
+      page.should have_xpath("//img[@src=\"/assets/apple-icon.png\"]")
+      page.should_not have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]")
     end
   end
   
   describe 'editing a project' do
     context 'when the current user owns the project' do
       before do
-        Project.create(owner: jay_pivot, name: "New project, about to be edited", scala: true)
+        Project.create(owner: jay_pivot, name: "New project, about to be edited", ios: true)
         
         login_user
       end
@@ -104,14 +95,14 @@ describe 'Projects', js: true do
         page.find('.edit-project a').click
 		        
         fill_in 'Project Name', with: 'Just got edited'
-		page.find('#scala-checkbox-container').click
+		page.find('#ios-checkbox-container').click
         click_on 'Update Project'
         
         current_path.should == root_path
         page.should have_content('Just got edited')
         page.should_not have_content('New Project, about to be edited')
-        page.should_not have_xpath("//img[@src=\"/assets/scala-icon.png\"]")
-        page.should have_xpath("//img[@src=\"/assets/scala-icon-grey.png\"]")        
+        page.should_not have_xpath("//img[@src=\"/assets/apple-icon.png\"]")
+        page.should have_xpath("//img[@src=\"/assets/apple-icon-grey.png\"]")        
       end
     end
     

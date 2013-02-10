@@ -12,9 +12,6 @@ describe Project do
 				"rails",
 				"ios",
 				"android",
-				"python",
-				"java",
-				"scala",
 				"javascript"
 			]
 		end
