@@ -13,8 +13,15 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def show
+    @project = ProjectPresenter.new(Project.find(params[:id]), current_user)
+
+    render partial: 'project'
+  end
+
   def new
     @project = Project.new
+    @new_project_form = true
 
     render layout: false
   end
