@@ -15,12 +15,17 @@ class ProjectsController < ApplicationController
 
   def new
     @project = Project.new
+
+    render layout: false
   end
 
   def create
-    Project.create_from_form_details_and_user params[:project], current_user
+    @project = ProjectPresenter.new(
+      Project.create_from_form_details_and_user params[:project], 
+      current_user
+    )
     
-    redirect_to root_path
+    render partial: 'project'
   end
 
   def edit
@@ -28,19 +33,21 @@ class ProjectsController < ApplicationController
       @project = project
       @owner = UserPresenter.new(@project.owner)
     end
+    render layout: false
   end
 
   def update
     ensure_access do |project|
       project.update_attributes(params[:project])
-      redirect_to root_path
+      @project = ProjectPresenter.new(project, current_user)
+      render partial: 'project'
     end
   end
   
   def destroy
     ensure_access do |project|
       project.destroy
-      redirect_to root_path
+      render nothing: true
     end
   end
   

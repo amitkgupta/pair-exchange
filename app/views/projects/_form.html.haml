@@ -1,33 +1,33 @@
-= form_for(@project) do |f|
-  = f.label :name
-  = f.text_field :name
-  - if @project.owner.present?
-    %p Owned By
-    =image_tag "#{@owner.profile_image_url}"
-    %span.display-name= @owner.display_name
-  = f.label :location
-  = f.select :location, Project::LOCATIONS
-  #rails-checkbox-container.checkbox-container
-    .used-technology=image_tag "rails-icon.png", title: "Rails"
-    .unused-technology=image_tag "rails-icon-grey.png", title: "Rails"
-    = f.check_box :rails, style: 'visibility: hidden'
-  #javascript-checkbox-container.checkbox-container
-    .used-technology=image_tag "javascript-icon.png", title: "Javascript"
-    .unused-technology=image_tag "javascript-icon-grey.png", title: "Javascript"
-    = f.check_box :javascript, style: 'visibility: hidden'
-  #ios-checkbox-container.checkbox-container
-    .used-technology=image_tag "apple-icon.png", title: "iOS"
-    .unused-technology=image_tag "apple-icon-grey.png", title: "iOS"
-    = f.check_box :ios, style: 'visibility: hidden'
-  #android-checkbox-container.checkbox-container
-    .used-technology=image_tag "android-icon.png", title: "Android"
-    .unused-technology=image_tag "android-icon-grey.png", title: "Android"
-    = f.check_box :android, style: 'visibility: hidden'
-  = f.label :other_technologies
-  = f.text_field :other_technologies
-  = f.label :description, "Description (#{link_to 'Markdown cheat sheet', 'https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-code'})".html_safe
-  = f.text_area :description
-  = f.submit "Save", type: :image, src: '/assets/save.png', title: "Save"
-  = link_to image_tag('cancel.png', title: "Cancel"), root_path
-
-
+.row-fluid.project-details
+  .span2
+    =image_tag "#{current_user.profile_image_url}"
+    %span.display-name= current_user.display_name
+  = form_for @project, remote: true do |f|
+    .span2= f.text_field :name
+    .span2= f.text_area :description, rows: 10
+    .span2
+      #rails-checkbox-container.checkbox-container
+        .used-technology=image_tag "rails-icon.png", title: "Rails"
+        .unused-technology=image_tag "rails-icon-grey.png", title: "Rails"
+        = f.check_box :rails, style: 'visibility: hidden'
+      #javascript-checkbox-container.checkbox-container
+        .used-technology=image_tag "javascript-icon.png", title: "Javascript"
+        .unused-technology=image_tag "javascript-icon-grey.png", title: "Javascript"
+        = f.check_box :javascript, style: 'visibility: hidden'
+      #ios-checkbox-container.checkbox-container
+        .used-technology=image_tag "apple-icon.png", title: "iOS"
+        .unused-technology=image_tag "apple-icon-grey.png", title: "iOS"
+        = f.check_box :ios, style: 'visibility: hidden'
+      #android-checkbox-container.checkbox-container
+        .used-technology=image_tag "android-icon.png", title: "Android"
+        .unused-technology=image_tag "android-icon-grey.png", title: "Android"
+        = f.check_box :android, style: 'visibility: hidden'
+      = f.text_field :other_technologies
+    .span2= f.select :location, Project::LOCATIONS
+    .span2.actions
+      = f.submit "Save", type: :image, src: '/assets/save.png', title: "Save", class: 'save-project'
+      = image_tag('cancel.png', title: "Cancel")
+.row-fluid.project-interested-users
+  .span12
+    = image_tag "thumbs-up-small.png"
+    %span= "#{@project.interested_users.join(', ')}"

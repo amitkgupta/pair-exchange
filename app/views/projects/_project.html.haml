@@ -1,0 +1,29 @@
+.row-fluid.project-details
+  .span2
+    =image_tag "#{@project.owner.profile_image_url}"
+    %span.display-name= @project.owner.display_name
+  .span2
+    .project-name= @project.name
+  .span2
+    .description= markdown @project.description
+  .span2
+    %span=image_tag(@project.rails ? "rails-icon.png" : "rails-icon-grey.png", title: "Rails")
+    %span=image_tag(@project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png", title: "Javascript")
+    %span=image_tag(@project.android ? "android-icon.png" : "android-icon-grey.png", title: "Android")
+    %span=image_tag(@project.ios ? "apple-icon.png" : "apple-icon-grey.png", title: "iOS")
+    .other_technologies= "Other: #{@project.other_technologies}"
+  .span2
+    .location= @project.location          
+  .span2
+    - if @project.current_user_interested
+      %span.recant-interest= link_to image_tag('thumbs-up.png', title: "Unlike"), interest_path(project_id: @project.id), method: :delete
+    - else
+      %span.declare-interest= link_to image_tag('thumbs-up-grey.png', title: "Like"), interests_path(project_id: @project.id), method: :post
+    - if @project.current_user_owns
+      %span= link_to image_tag('calendar.png', title: 'Schedule'), schedule_project_path(@project.id), class: "schedule-project"
+      %span= link_to image_tag('edit.png', title: "Edit"), edit_project_path(@project.id), remote: true, class: "edit-project"
+      %span= link_to image_tag('fire.png', title: "Delete"), "/projects/#{@project.id}", method: :delete, remote: true, class: "delete-project"
+.row-fluid.project-interested-users
+  .span12
+    = image_tag "thumbs-up-small.png"
+    %span= "#{@project.interested_users.join(', ')}"

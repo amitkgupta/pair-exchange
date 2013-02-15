@@ -18,23 +18,16 @@
     Projects for All Locations
 
 #projects-table.row-fluid.striped
-  .span12
-    .row-fluid.head
-      .span2.owner-heading Owner
-      .span2.project-name-heading Project Name
-      .span2.description-heading Description
-      .span2.technologies-heading Technologies
-      .span2.location-heading Location
-      .span2.actions-heading Actions
-    - @project_presenters.each do |project|
-      .row-fluid.project
-        .span12
-          .row-fluid{id: "project-#{project.id}-details"}
-            = render 'project_details', project: project
-          .row-fluid{id: "project-#{project.id}-interested-users"}
-            .span12
-              = image_tag "thumbs-up-small.png"
-              %span.interested-users= "#{project.interested_users.join(', ')}"
-  .span12
-    .row-fluid.add-project
-      =link_to image_tag('add.png', title: "New Project"), new_project_path
+  .row-fluid.head
+    .span2.owner-heading Owner
+    .span2.project-name-heading Project Name
+    .span2.description-heading Description
+    .span2.technologies-heading Technologies
+    .span2.location-heading Location
+    .span2.actions-heading Actions
+  - @project_presenters.each do |project|
+    - @project = project
+    .row-fluid.project
+      = render 'project', project: @project
+  .row-fluid
+    =link_to image_tag('add.png', title: "New Project"), new_project_path, remote: true, class: "add-project"
