@@ -1,7 +1,7 @@
 PairExchange::Application.routes.draw do
   root to: 'projects#index'
 
-  resources :projects, except: :show do
+  resources :projects do
     member do
       get 'schedule'
       put 'update_schedule'

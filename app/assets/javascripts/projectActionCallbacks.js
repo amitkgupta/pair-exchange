@@ -19,6 +19,7 @@ function addProjectCallback(_, response) {
 	$new_row.html(response);
 	$new_row.find('.checkbox-container').each(makeTechnologyIconIntoCheckbox);
 	$new_row.find('form').bind("ajax:success", saveProjectCallback);
+	$new_row.find('.cancel').click(function() { $new_row.remove(); });
 }
 
 function editProjectCallback(_, response) {
