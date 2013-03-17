@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/amitkgupta/pair-exchange.png)](https://travis-ci.org/amitkgupta/pair-exchange)
+[![Build Status](https://travis-ci.org/amitkgupta/pair-exchange.png?branch=master)](https://travis-ci.org/amitkgupta/pair-exchange)
 
 This app helps facilitate weekly-ish Pair Exchange events at the various Pivotal Labs offices.
 
