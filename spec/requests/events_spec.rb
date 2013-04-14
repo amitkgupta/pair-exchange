@@ -15,9 +15,9 @@ describe "Events", js: true do
 		it "does not allow direct navigation to the events section" do
 			login_user
 			
-			visit events_path
+			visit "/events"
 			
-			current_path.should == root_path
+			current_path.should == "/"
 		end
 	end
 	
@@ -31,15 +31,15 @@ describe "Events", js: true do
 		
 			click_on "Events"
 			
-			current_path.should == events_path
+			current_path.should == "/events"
 		end
 		
-		pending "allows direct navigation to the events page" do
+		it "allows direct navigation to the events page" do
 			login_user
 			
-			visit events_path
+			visit "/events"
 			
-			current_path.should == events_path
+			current_path.should == "/events"
     	end
     	
     	describe "listing events" do

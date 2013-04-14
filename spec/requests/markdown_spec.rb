@@ -5,7 +5,7 @@ describe "Markdown", js: true do
 		login_user
 		
 		click_on "Add"
-		fill_in "Description", with: "[foo](https://www.youtube.com/watch?v=7rE0-ek6MZA)
+		fill_in "project_description", with: "[foo](https://www.youtube.com/watch?v=7rE0-ek6MZA)
 
 **bold text**
 

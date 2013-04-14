@@ -1,7 +1,6 @@
 function makeTechnologyIconIntoCheckbox(_, container) {
 	var $container = $(container);
 	var $checkbox = $container.find('input[type="checkbox"]');
-	var $hiddenbox = $container.find('input[type="hidden"]');
 	if ($checkbox.prop('checked')) {
 		$container.find('.unused-technology').addClass('hidden');
 	} else {

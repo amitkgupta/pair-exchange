@@ -11,7 +11,7 @@
     %span=image_tag(@project.javascript ? "javascript-icon.png" : "javascript-icon-grey.png", title: "Javascript")
     %span=image_tag(@project.android ? "android-icon.png" : "android-icon-grey.png", title: "Android")
     %span=image_tag(@project.ios ? "apple-icon.png" : "apple-icon-grey.png", title: "iOS")
-    .other_technologies= "Other: #{@project.other_technologies}"
+    .other-technologies= "Other: #{@project.other_technologies}"
   .span2
     .location= @project.location          
   .span2

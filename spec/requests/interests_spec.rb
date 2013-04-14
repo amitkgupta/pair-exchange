@@ -5,20 +5,20 @@ describe 'Interests', js: true do
     before do
       Project.create(name: 'My Lovely Project', owner: friendly_user)
     
- 	  login_user
+ 	    login_user
     end
 
     it 'allows you to toogle interest in a project' do
-	  page.should_not have_css('.recant-interest')
+	    page.should_not have_css('.recant-interest')
   
   	  page.find('.declare-interest a').click
     
-	  page.should_not have_css('.declare-interest')
+	    page.should_not have_css('.declare-interest')
 
-	  page.find('.recant-interest a').click
+	    page.find('.recant-interest a').click
     
-	  page.should_not have_css('.recant-interest')
-	  page.should have_css('.declare-interest')
+	    page.should_not have_css('.recant-interest')
+	    page.should have_css('.declare-interest')
     end
   end
   
@@ -32,11 +32,11 @@ describe 'Interests', js: true do
     
       login_user
 	
-	  lists_of_interested_users = page.all('.interested-users').map { |cell| cell.text.split(", ") }
-	  lists_of_interested_users.map(&:to_set).to_set.should == Set.new([
-		Set.new(["o.solo.mioooo@gmail.com"]),
-		Set.new(["o.solo.mioooo@gmail.com", "pear.programming@gmail.com"])
-	  ])
+	    lists_of_interested_users = page.all('.project-interested-users').map { |cell| cell.text.split(", ") }
+	    lists_of_interested_users.map(&:to_set).to_set.should == Set.new([
+		    Set.new(["o.solo.mioooo@gmail.com"]),
+		    Set.new(["o.solo.mioooo@gmail.com", "pear.programming@gmail.com"])
+	    ])
     end
   end
 end

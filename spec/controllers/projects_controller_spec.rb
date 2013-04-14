@@ -1,4 +1,4 @@
-require 'spec_helper'
+  require 'spec_helper'
 
 describe ProjectsController do
   describe 'routing' do
@@ -37,13 +37,13 @@ describe ProjectsController do
   
   describe 'actions' do
     before do
-	  fake_login_user
+	    fake_login_user
     end
 
     describe '#index' do
       before do
-	    Project.create(name: 'The Alan Parsons Project', owner: friendly_user)
-	    Project.create(name: 'Projecting Fear', owner: friendly_user)
+	      Project.create(name: 'The Alan Parsons Project', owner: friendly_user)
+	      Project.create(name: 'Projecting Fear', owner: friendly_user)
   	    Project.create(name: 'Astral Projection', owner: friendly_user)
       end
 
@@ -54,7 +54,7 @@ describe ProjectsController do
         assigns(:location).should be_nil
       end
 
-      context "with an location filter parameter" do
+      context "with a location filter parameter" do
         it "should only show projects for that location" do
           get :index, location: "NY"
           assigns(:projects).should == Project.where(location: "NY")
@@ -100,41 +100,45 @@ describe ProjectsController do
 
     describe 'create' do
       it 'creates a new project with the given params' do
-        expect do
+        expect {
           post :create, project:
             { name: 'asdf',
               location: 'SF',
               other_technologies: 'Cardboard'
             }
-        end.to change(Project, :count).by(1)
-        Project.last.name.should == 'asdf'
-        Project.last.owner.should == fake_logged_in_user
-        Project.last.location.should == 'SF'
-        Project.last.other_technologies.should == 'Cardboard'
+        }.to change(Project, :count).by(1)
+
+        Project.last.tap do |project| 
+          project.name.should == 'asdf'
+          project.owner.should == fake_logged_in_user
+          project.location.should == 'SF'
+          project.other_technologies.should == 'Cardboard'
+        end
       end
 
-      it 'redirects to /' do
+      it 'renders a partial to be handled by AJAX' do
         post :create, project: {name: 'asdf'}
-        response.should redirect_to(root_path)
+        
+        response.should render_template(:project)
       end
     end
 
     describe 'update' do
       context 'when the project belongs to the logged in user' do
-	    let!(:project) { Project.create(owner: fake_logged_in_user) }
+	      let!(:project) { Project.create(owner: fake_logged_in_user) }
 	   
         it 'updates a project with the given params' do
-          expect do
+          expect {
             put :update, id: project.to_param, project: {name: 'new name'}
-          end.to change(Project, :count).by(0)
+          }.to change(Project, :count).by(0)
  
           project.reload.name.should == 'new name'
         end
 
-        it 'redirects to /' do
+        it 'renders a partial to be handled by AJAX' do
           put :update, id: project.to_param, project: {name: 'new name'}
 
-          response.should redirect_to(root_path)
+          response.should render_template(:project)
         end
       end
     
@@ -146,24 +150,18 @@ describe ProjectsController do
       
           response.status.should == 403
         end
-	  end
+	    end
     end  
   
     describe 'destroy' do
       context 'when the project belongs to the logged in user' do
-	    let!(:project) { Project.create(owner: fake_logged_in_user) }
-	  
-        it 'deletes the project' do
-          expect do
-            delete :destroy, id: project.to_param
-          end.to change(Project, :count).by(-1)
-  	    end
+	      it 'deletes the project' do
+          project = Project.create(owner: fake_logged_in_user)
 
-        it 'redirects to /' do
-          delete :destroy, id: project.to_param
-        
-          response.should redirect_to(root_path)
-        end
+          expect {         
+            delete :destroy, id: project.to_param
+          }.to change(Project, :count).by(-1)
+  	    end
       end
     
       context 'when the project does not belong to the logged in user' do
@@ -208,19 +206,19 @@ describe ProjectsController do
     describe 'update_schedule' do
       context 'when the project belongs to the logged in user' do
   	    let(:project) { Project.create(owner: fake_logged_in_user) }
-	    let(:event_to_be_unscheduled) { Event.create }
-	    let(:event_to_be_scheduled) { Event.create }
+	      let(:event_to_be_unscheduled) { Event.create }
+	      let(:event_to_be_scheduled) { Event.create }
 	    
-	    before do
-	      project.events << event_to_be_unscheduled
-	      project.save!
-	    end
-	   
+  	    before do
+  	      project.events << event_to_be_unscheduled
+  	      project.save!
+  	    end
+  	   
         it "updates adds the event to the projects' events" do
           project.events.should == [event_to_be_unscheduled]
-        
+          
           put :update_schedule, id: project.id, "event-#{event_to_be_scheduled.id}" => "#{event_to_be_scheduled.id}"
- 
+   
           project.reload.events.should == [event_to_be_scheduled]
         end
 
@@ -230,17 +228,17 @@ describe ProjectsController do
           response.should redirect_to(root_path)
         end
       end
-    
+      
       context 'when the project does not belong to the logged in user' do
         it 'forbids the request' do
           fake_logged_in_user.should_not == loner
           project = Project.create(owner: loner)
 
-      	  put :update_schedule, id: project.id
-      
+          put :update_schedule, id: project.id
+        
           response.status.should == 403
         end
-	  end
+      end
     end
   end
 end

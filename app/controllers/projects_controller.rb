@@ -3,14 +3,13 @@ require_relative '../presenters/project_presenter.rb'
 class ProjectsController < ApplicationController
   def index
     @projects = Project.includes(:owner, :interested_users)
+    
     if params[:location]
       @location = params[:location].to_s
       @projects = @projects.where(location: @location)
     end
 
-    @project_presenters = @projects.all.map do |project|
-      ProjectPresenter.new(project, current_user)
-    end
+    @project_presenters = @projects.all.map { |project| ProjectPresenter.new(project, current_user) }
   end
 
   def show
@@ -23,7 +22,7 @@ class ProjectsController < ApplicationController
     @project = Project.new
     @new_project_form = true
 
-    render layout: false
+    render partial: 'form'
   end
 
   def create
@@ -31,22 +30,22 @@ class ProjectsController < ApplicationController
       Project.create_from_form_details_and_user params[:project], 
       current_user
     )
-    
-    render partial: 'project'
+    render partial: 'project'    
   end
 
   def edit
     ensure_access do |project|
       @project = project
       @owner = UserPresenter.new(@project.owner)
+      render partial: 'form'
     end
-    render layout: false
   end
 
   def update
     ensure_access do |project|
       project.update_attributes(params[:project])
       @project = ProjectPresenter.new(project, current_user)
+      
       render partial: 'project'
     end
   end
@@ -54,7 +53,8 @@ class ProjectsController < ApplicationController
   def destroy
     ensure_access do |project|
       project.destroy
-      render nothing: true
+      
+      render nothing: true  
     end
   end
   
@@ -68,6 +68,7 @@ class ProjectsController < ApplicationController
   def update_schedule
     ensure_access do |project|
       project.update_schedule_from_form_details params
+      
       redirect_to root_path
     end
   end
