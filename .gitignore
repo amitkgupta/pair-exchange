@@ -20,3 +20,6 @@
 
 # Ignore environment varaibles with private information
 heroku_env.rb
+
+# Ignore Cloud Foundry push manifest
+manifest.yml
