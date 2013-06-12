@@ -36,6 +36,6 @@ PairExchange::Application.configure do
   config.active_support.deprecation = :stderr
 end
 
-HOST = "http://localhost:8378/"
+ENV["HOST"] = "http://localhost:8378/"
 ENV["GOOGLE_OAUTH2_CLIENT_ID"] = "FOOBAR.apps.googleusercontent.com"
 ENV["GOOGLE_OAUTH2_CLIENT_SECRET"] = "SOOP3Rsekr1t"

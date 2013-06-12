@@ -4,7 +4,7 @@ class GoogleApiInterface
 	def self.client_secret; ENV["GOOGLE_OAUTH2_CLIENT_SECRET"]; end
 	def self.user_email_url; "https://www.googleapis.com/auth/userinfo.email"; end
 	def self.google_plus_url; "https://www.googleapis.com/auth/plus.me"; end
-	def self.host; HOST; end
+	def self.host; ENV["HOST"]; end
 			
 	attr_reader :client
 

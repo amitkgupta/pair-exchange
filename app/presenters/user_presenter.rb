@@ -1,5 +1,5 @@
 class UserPresenter
-	DEFAULT_IMAGE_URL = "#{HOST}assets/default_google_profile_image.png"
+	DEFAULT_IMAGE_URL = "#{ENV["HOST"]}assets/default_google_profile_image.png"
 	attr_reader :display_name, :profile_image_url
 
 	def initialize(user)

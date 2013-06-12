@@ -43,4 +43,4 @@ PairExchange::Application.configure do
   end
 end
 
-HOST = "http://localhost:3000/"
+ENV["HOST"] = "http://localhost:3000/"
