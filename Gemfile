@@ -10,6 +10,7 @@ gem 'twitter-bootstrap-rails'
 gem 'thin'
 gem 'google-api-client'
 gem 'redcarpet'
+gem 'pg'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -20,7 +21,6 @@ end
 
 group :production do
   gem 'heroku_san'
-  gem 'pg'
 end
 
 group :test do
@@ -31,7 +31,6 @@ group :test do
 end
 
 group :test, :development do
-  gem 'sqlite3'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'poltergeist'

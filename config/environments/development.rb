@@ -42,5 +42,3 @@ PairExchange::Application.configure do
   	Bullet.alert = false
   end
 end
-
-ENV["HOST"] = "http://localhost:3000/"

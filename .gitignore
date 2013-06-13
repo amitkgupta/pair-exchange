@@ -18,8 +18,14 @@
 /log/*.log
 /tmp
 
-# Ignore environment varaibles with private information
-heroku_env.rb
+# Ignore local environment variables with private information
+set_local_env
+
+# Ignore Heroku environment varaibles with private information
+set_heroku_env
 
 # Ignore Cloud Foundry push manifest
 manifest.yml
+
+# Ignore Cloud Foundry environment variables with private information
+set_cf_env
